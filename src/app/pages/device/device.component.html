@@ -2,27 +2,27 @@
     <div class="absolute top-0 end-0 w-full z-[-1]">
         <img src="/images/top-bg.png" class="w-[75%] absolute top-0 end-0" alt="">
     </div>
-    <div class="px-32 pt-10 pb-20">
-        <div class="flex items-center gap-5">
-            <div class="border rounded-full px-6 pt-2 pb-2.5 cursor-pointer text-base font-customRegular"
+    <div class="px-4 sm:px-8 lg:px-32 pt-6 sm:pt-8 lg:pt-10 pb-12 sm:pb-16 lg:pb-20">
+        <div class="flex flex-wrap items-center gap-3 sm:gap-4 lg:gap-5 justify-center sm:justify-start">
+            <div class="border rounded-full px-4 sm:px-5 lg:px-6 pt-2 pb-2.5 cursor-pointer text-sm sm:text-base font-customRegular"
                 [ngClass]="activeTab === 'Devices' ? 'bg-primaryColor text-white border-primaryColor' : 'border-primaryColor text-primaryColor bg-white'"
                 (click)="setActive('Devices')">
                 Devices
             </div>
-            <div class="border rounded-full px-6 pt-2 pb-2.5 cursor-pointer text-base font-customRegular"
+            <div class="border rounded-full px-4 sm:px-5 lg:px-6 pt-2 pb-2.5 cursor-pointer text-sm sm:text-base font-customRegular"
                 [ngClass]="activeTab === 'Kiosks' ? 'bg-primaryColor text-white border-primaryColor' : 'border-primaryColor text-primaryColor bg-white'"
                 (click)="setActive('Kiosks')">
                 Kiosks
             </div>
-            <div class="border rounded-full px-6 pt-2 pb-2.5 cursor-pointer text-base font-customRegular"
+            <div class="border rounded-full px-4 sm:px-5 lg:px-6 pt-2 pb-2.5 cursor-pointer text-sm sm:text-base font-customRegular"
                 [ngClass]="activeTab === 'Kits' ? 'bg-primaryColor text-white border-primaryColor' : 'border-primaryColor text-primaryColor bg-white'"
                 (click)="setActive('Kits')">
                 Kits
             </div>
         </div>
 
-        <div class="mt-10 grid gap-16">
-            <div class="grid grid-cols-2 gap-20">
+        <div class="mt-6 sm:mt-8 lg:mt-10 grid gap-8 sm:gap-12 lg:gap-16">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-20">
                 <div>
                     <div class="relative">
                         <swiper class="thumbSlide" [config]="carouselConfig">
@@ -52,21 +52,21 @@
                 <div class="">
                     <h2 class="text-black text-3xl font-customBold mb-5">MR 300</h2>
                     <ul class="ms-5 grid gap-2">
-                        <li class="list-disc text-base font-customRegular text-[#00000099]">5” Color TFT display</li>
-                        <li class="list-disc text-base font-customRegular text-[#00000099]">12 Leads simultaneous ECG acquisition</li>
-                        <li class="list-disc text-base font-customRegular text-[#00000099]">3 Channel ECG Recording</li>
-                        <li class="list-disc text-base font-customRegular text-[#00000099]">Interpretation Facility</li>
-                        <li class="list-disc text-base font-customRegular text-[#00000099]">Memory storage for 5 patients</li>
-                        <li class="list-disc text-base font-customRegular text-[#00000099]">Auto & Manual mode of operation</li>
-                        <li class="list-disc text-base font-customRegular text-[#00000099]">PDF convertor to transfer ECG from device to USB</li>
-                        <li class="list-disc text-base font-customRegular text-[#00000099]">Display of 12 Lead ECG waveform</li>
-                        <li class="list-disc text-base font-customRegular text-[#00000099]">ECG lead annotation facility</li>
+                        <li class="list-disc text-sm sm:text-base font-customRegular text-[#00000099]">5” Color TFT display</li>
+                        <li class="list-disc text-sm sm:text-base font-customRegular text-[#00000099]">12 Leads simultaneous ECG acquisition</li>
+                        <li class="list-disc text-sm sm:text-base font-customRegular text-[#00000099]">3 Channel ECG Recording</li>
+                        <li class="list-disc text-sm sm:text-base font-customRegular text-[#00000099]">Interpretation Facility</li>
+                        <li class="list-disc text-sm sm:text-base font-customRegular text-[#00000099]">Memory storage for 5 patients</li>
+                        <li class="list-disc text-sm sm:text-base font-customRegular text-[#00000099]">Auto & Manual mode of operation</li>
+                        <li class="list-disc text-sm sm:text-base font-customRegular text-[#00000099]">PDF convertor to transfer ECG from device to USB</li>
+                        <li class="list-disc text-sm sm:text-base font-customRegular text-[#00000099]">Display of 12 Lead ECG waveform</li>
+                        <li class="list-disc text-sm sm:text-base font-customRegular text-[#00000099]">ECG lead annotation facility</li>
                     </ul>
                     <button type="button" class="border mt-8 border-[#009EE0] px-8 py-2.5 text-[#009EE0] font-customRegular text-sm rounded-full">Download Brochure</button>
                 </div>
             </div>
 
-             <div class="grid grid-cols-2 gap-20">
+             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-20">
                 <div>
                     <div class="relative">
                         <swiper class="thumbSlide" [config]="carouselConfig1">
@@ -96,21 +96,21 @@
                 <div class="">
                     <h2 class="text-black text-3xl font-customBold mb-5">MR 300</h2>
                     <ul class="ms-5 grid gap-2">
-                        <li class="list-disc text-base font-customRegular text-[#00000099]">5” Color TFT display</li>
-                        <li class="list-disc text-base font-customRegular text-[#00000099]">12 Leads simultaneous ECG acquisition</li>
-                        <li class="list-disc text-base font-customRegular text-[#00000099]">3 Channel ECG Recording</li>
-                        <li class="list-disc text-base font-customRegular text-[#00000099]">Interpretation Facility</li>
-                        <li class="list-disc text-base font-customRegular text-[#00000099]">Memory storage for 5 patients</li>
-                        <li class="list-disc text-base font-customRegular text-[#00000099]">Auto & Manual mode of operation</li>
-                        <li class="list-disc text-base font-customRegular text-[#00000099]">PDF convertor to transfer ECG from device to USB</li>
-                        <li class="list-disc text-base font-customRegular text-[#00000099]">Display of 12 Lead ECG waveform</li>
-                        <li class="list-disc text-base font-customRegular text-[#00000099]">ECG lead annotation facility</li>
+                        <li class="list-disc text-sm sm:text-base font-customRegular text-[#00000099]">5” Color TFT display</li>
+                        <li class="list-disc text-sm sm:text-base font-customRegular text-[#00000099]">12 Leads simultaneous ECG acquisition</li>
+                        <li class="list-disc text-sm sm:text-base font-customRegular text-[#00000099]">3 Channel ECG Recording</li>
+                        <li class="list-disc text-sm sm:text-base font-customRegular text-[#00000099]">Interpretation Facility</li>
+                        <li class="list-disc text-sm sm:text-base font-customRegular text-[#00000099]">Memory storage for 5 patients</li>
+                        <li class="list-disc text-sm sm:text-base font-customRegular text-[#00000099]">Auto & Manual mode of operation</li>
+                        <li class="list-disc text-sm sm:text-base font-customRegular text-[#00000099]">PDF convertor to transfer ECG from device to USB</li>
+                        <li class="list-disc text-sm sm:text-base font-customRegular text-[#00000099]">Display of 12 Lead ECG waveform</li>
+                        <li class="list-disc text-sm sm:text-base font-customRegular text-[#00000099]">ECG lead annotation facility</li>
                     </ul>
                     <button type="button" class="border mt-8 border-[#009EE0] px-8 py-2.5 text-[#009EE0] font-customRegular text-sm rounded-full">Download Brochure</button>
                 </div>
             </div>
 
-             <div class="grid grid-cols-2 gap-20">
+             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-20">
                 <div>
                     <div class="relative">
                         <swiper class="thumbSlide" [config]="carouselConfig2">
@@ -140,15 +140,15 @@
                 <div class="">
                     <h2 class="text-black text-3xl font-customBold mb-5">MR 300</h2>
                     <ul class="ms-5 grid gap-2">
-                        <li class="list-disc text-base font-customRegular text-[#00000099]">5” Color TFT display</li>
-                        <li class="list-disc text-base font-customRegular text-[#00000099]">12 Leads simultaneous ECG acquisition</li>
-                        <li class="list-disc text-base font-customRegular text-[#00000099]">3 Channel ECG Recording</li>
-                        <li class="list-disc text-base font-customRegular text-[#00000099]">Interpretation Facility</li>
-                        <li class="list-disc text-base font-customRegular text-[#00000099]">Memory storage for 5 patients</li>
-                        <li class="list-disc text-base font-customRegular text-[#00000099]">Auto & Manual mode of operation</li>
-                        <li class="list-disc text-base font-customRegular text-[#00000099]">PDF convertor to transfer ECG from device to USB</li>
-                        <li class="list-disc text-base font-customRegular text-[#00000099]">Display of 12 Lead ECG waveform</li>
-                        <li class="list-disc text-base font-customRegular text-[#00000099]">ECG lead annotation facility</li>
+                        <li class="list-disc text-sm sm:text-base font-customRegular text-[#00000099]">5” Color TFT display</li>
+                        <li class="list-disc text-sm sm:text-base font-customRegular text-[#00000099]">12 Leads simultaneous ECG acquisition</li>
+                        <li class="list-disc text-sm sm:text-base font-customRegular text-[#00000099]">3 Channel ECG Recording</li>
+                        <li class="list-disc text-sm sm:text-base font-customRegular text-[#00000099]">Interpretation Facility</li>
+                        <li class="list-disc text-sm sm:text-base font-customRegular text-[#00000099]">Memory storage for 5 patients</li>
+                        <li class="list-disc text-sm sm:text-base font-customRegular text-[#00000099]">Auto & Manual mode of operation</li>
+                        <li class="list-disc text-sm sm:text-base font-customRegular text-[#00000099]">PDF convertor to transfer ECG from device to USB</li>
+                        <li class="list-disc text-sm sm:text-base font-customRegular text-[#00000099]">Display of 12 Lead ECG waveform</li>
+                        <li class="list-disc text-sm sm:text-base font-customRegular text-[#00000099]">ECG lead annotation facility</li>
                     </ul>
                     <button type="button" class="border mt-8 border-[#009EE0] px-8 py-2.5 text-[#009EE0] font-customRegular text-sm rounded-full">Download Brochure</button>
                 </div>

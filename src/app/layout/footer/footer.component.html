@@ -1,8 +1,15 @@
-<footer class="bg-white px-20 py-8">
-    <div class="flex items-center justify-between gap-5">
-        <div>
-            <img src="/images/logo.svg" class="w-56" alt="">
+<footer class="bg-white px-4 sm:px-8 lg:px-20 py-6 sm:py-8">
+    <div class="flex flex-col sm:flex-row items-center justify-center sm:justify-between gap-4 sm:gap-5">
+        <div class="order-1 sm:order-1 text-center sm:text-left">
+            <img src="/images/logo.svg" class="w-40 sm:w-48 lg:w-56 mx-auto sm:mx-0" alt="Carebridge Technologies Logo">
         </div>
-        <p class="text-base font-customRegular text-[#11182780]">Copyright © {{currentYear}} Carebridge Technologies India Pvt Ltd | All Rights Reserved </p>
+        <div class="order-2 sm:order-2 text-center sm:text-right">
+            <p class="text-sm sm:text-base font-customRegular text-[#11182780] max-w-xs sm:max-w-none">
+                Copyright © {{currentYear}} Carebridge Technologies India Pvt Ltd
+            </p>
+            <p class="text-sm sm:text-base font-customRegular text-[#11182780] mt-1 sm:mt-0 sm:inline">
+                <span class="hidden sm:inline"> | </span>All Rights Reserved
+            </p>
+        </div>
     </div>
 </footer>

@@ -1,70 +1,92 @@
 <section class="pb-10">
+    <!-- Background Image -->
     <div class="absolute top-0 end-0 w-full z-[-1]">
-        <img src="/images/top-bg.png" class="w-[75%] absolute top-0 end-0" alt="">
+        <img src="/images/top-bg.png" class="w-[78%] sm:w-[75%] absolute top-0 end-0" alt="">
     </div>
 
-    <div class="flex gap-24 items-end w-full mt-16">
-        <div class="w-[60%] ps-28">
-            <div class="">
-                <h2 class="text-5xl font-customBold text-primaryColor capitalize">Get in <span
-                        class="text-secondaryColor">touch today</span></h2>
-                <p class="mt-3 text-base font-customRegular text-[#3E3E3E] mx-auto pe-32">Lorem ipsum
-                    dolor sit amet consectetur adipiscing elit semper dalar elementum tempus hac tellus libero
-                    accumsan. </p>
-            </div>
+    <!-- Main Content Container -->
+    <div class="px-4 sm:px-8 lg:px-0 mt-8 sm:mt-12 lg:mt-16">
+        <div class="grid grid-cols-1 lg:grid-cols-5 gap-8 lg:gap-0 lg:items-end w-full">
+            
+            <!-- Contact Form Section -->
+            <div class="lg:col-span-3 lg:ps-28 order-2 lg:order-1">
+                <!-- Header -->
+                <div class="text-center lg:text-left">
+                    <h2 class="text-3xl sm:text-4xl lg:text-5xl font-customBold text-primaryColor capitalize">
+                        Get in <span class="text-secondaryColor">touch today</span>
+                    </h2>
+                    <p class="mt-3 text-sm sm:text-base font-customRegular text-[#3E3E3E] mx-auto lg:mx-0 lg:pe-32 max-w-lg lg:max-w-none">
+                        Lorem ipsum dolor sit amet consectetur adipiscing elit semper dalar elementum tempus hac tellus libero accumsan.
+                    </p>
+                </div>
 
-            <div class="mt-10">
-                <div class="bg-[#F0F9F8] rounded-2xl p-10 overflow-hidden">
-                    <div class="grid grid-cols-2 gap-5">
-                        <div>
-                            <label class="lable" for="">Name</label>
-                            <input type="text" class="input-box" placeholder="John Carter">
+                <!-- Contact Form -->
+                <div class="mt-8 lg:mt-10">
+                    <div class="bg-[#F0F9F8] rounded-2xl p-6 sm:p-8 lg:p-10 overflow-hidden">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 lg:gap-5">
+                            <div class="sm:col-span-1">
+                                <label class="lable" for="name">Name</label>
+                                <input type="text" class="input-box" id="name" placeholder="John Carter">
+                            </div>
+                            <div class="sm:col-span-1">
+                                <label class="lable" for="email">Email</label>
+                                <input type="email" class="input-box" id="email" placeholder="example@email.com">
+                            </div>
+                            <div class="sm:col-span-1">
+                                <label class="lable" for="phone">Phone</label>
+                                <input type="tel" class="input-box" id="phone" placeholder="(123) 456 - 789">
+                            </div>
+                            <div class="sm:col-span-1">
+                                <label class="lable" for="company">Company</label>
+                                <input type="text" class="input-box" id="company" placeholder="Facebook">
+                            </div>
+                            <div class="col-span-1 sm:col-span-2">
+                                <label class="lable" for="message">Message</label>
+                                <textarea name="message" class="input-box h-24 sm:h-32 rounded-2xl resize-none w-full" id="message"
+                                    placeholder="Please type your message here..."></textarea>
+                            </div>
                         </div>
-                        <div>
-                            <label class="lable" for="">Email</label>
-                            <input type="text" class="input-box" placeholder="example@email.com">
-                        </div>
-                        <div>
-                            <label class="lable" for="">Phone</label>
-                            <input type="text" class="input-box" placeholder="(123) 456 - 789">
-                        </div>
-                        <div>
-                            <label class="lable" for="">Company</label>
-                            <input type="text" class="input-box" placeholder="Facebook">
-                        </div>
-                        <div class="col-span-2">
-                            <label class="lable" for="">Message</label>
-                            <!-- <input type="text" class="input-box" placeholder="Facebook"> -->
-                            <textarea name="" class="input-box h-32 rounded-2xl resize-none w-full" id=""
-                                placeholder="Please type your message here..."></textarea>
+
+                        <div class="mt-5">
+                            <button class="theme-button px-8 sm:px-10 py-3 text-center w-full sm:w-auto">Send message</button>
                         </div>
                     </div>
-
-                    <div class="mt-5">
-                        <button class="theme-button px-10 py-3 text-center">Send message</button>
-                    </div>
-
                 </div>
             </div>
-        </div>
-        <div class="w-[40%] bg-[#005783] p-20 rounded-s-xl grid gap-10 pb-80">
-            <h2 class="text-white text-3xl font-customBold">Contact details</h2>
-            <div class="grid gap-3">
-                <p class="font-customRegular text-base text-white uppercase">Our location</p>
-                <h4 class="text-white font-customBold text-lg">58 Middle Point Rd<br>
-                    San Francisco, 94124</h4>
-            </div>
 
-            <div class="grid gap-3">
-                <p class="font-customRegular text-base text-white uppercase">Call us</p>
-                <h4 class="text-white font-customBold text-lg">(123) 456 - 789</h4>
-            </div>
+            <!-- Contact Details Section -->
+            <div class="lg:col-span-2 bg-[#005783] p-6 sm:p-8 lg:p-20 rounded-xl lg:rounded-s-xl lg:rounded-e-none grid gap-6 lg:gap-10 order-1 lg:order-2 lg:pb-60">
+                <h2 class="text-white text-2xl sm:text-3xl font-customBold text-center lg:text-left">Contact details</h2>
+                
+                <!-- Location -->
+                <div class="grid gap-2 lg:gap-3 text-center lg:text-left">
+                    <p class="font-customRegular text-sm sm:text-base text-white uppercase">Our location</p>
+                    <h4 class="text-white font-customBold text-base sm:text-lg">
+                        58 Middle Point Rd<br>
+                        San Francisco, 94124
+                    </h4>
+                </div>
 
-            <div class="grid gap-3">
-                <p class="font-customRegular text-base text-white uppercase">Email us</p>
-                <h4 class="text-white font-customBold text-lg">contact&#64;company.com</h4>
-            </div>
+                <!-- Phone -->
+                <div class="grid gap-2 lg:gap-3 text-center lg:text-left">
+                    <p class="font-customRegular text-sm sm:text-base text-white uppercase">Call us</p>
+                    <h4 class="text-white font-customBold text-base sm:text-lg">
+                        <a href="tel:+11234567890" class="hover:text-secondaryColor transition-colors">
+                            (123) 456 - 789
+                        </a>
+                    </h4>
+                </div>
 
+                <!-- Email -->
+                <div class="grid gap-2 lg:gap-3 text-center lg:text-left">
+                    <p class="font-customRegular text-sm sm:text-base text-white uppercase">Email us</p>
+                    <h4 class="text-white font-customBold text-base sm:text-lg">
+                        <a href="mailto:contact@company.com" class="hover:text-secondaryColor transition-colors">
+                            contact&#64;company.com
+                        </a>
+                    </h4>
+                </div>
+            </div>
         </div>
     </div>
 </section>

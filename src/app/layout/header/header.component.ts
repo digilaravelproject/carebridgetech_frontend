@@ -11,13 +11,24 @@ export class HeaderComponent {
 
   isScrolled = false;
   currentRoute: string = '';
+  isMobileMenuOpen = false;
 
   constructor(private router: Router) {
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
     ).subscribe(() => {
       this.currentRoute = this.router.url;
+      // Close mobile menu when navigating to new route
+      this.isMobileMenuOpen = false;
     });
+  }
+
+  toggleMobileMenu() {
+    this.isMobileMenuOpen = !this.isMobileMenuOpen;
+  }
+
+  closeMobileMenu() {
+    this.isMobileMenuOpen = false;
   }
 
   @HostListener('window:scroll', [])

@@ -1,54 +1,174 @@
-<header class="px-14" [ngClass]="isScrolled ? 'bg-white shadow-md' : 'bg-transparent'">
-    <div class="flex items-center justify-between py-5">
+<header class="px-4 sm:px-8 lg:px-14 relative z-50" [ngClass]="isScrolled ? 'bg-white shadow-md' : 'bg-transparent'">
+    <div class="flex items-center justify-between py-4 lg:py-5">
+        <!-- Logo -->
         <div>
-            <img src="/images/logo.svg" class="w-48" alt="">
+            <img src="/images/logo.svg" class="w-32 sm:w-40 lg:w-48" alt="Carebridge Logo">
         </div>
-        <div class="flex items-center gap-8">
+
+        <!-- Desktop Navigation -->
+        <div class="hidden lg:flex items-center gap-8">
             <ul class="flex items-center gap-8">
                 <li>
                     <a routerLink="/home" [ngClass]="{
-    'font-customBold': currentRoute === '/home',
-    'font-customRegular': currentRoute !== '/home'
-  }" class="cursor-pointer text-base font-customRegular text-primaryColor">
+                        'font-customBold': currentRoute === '/home',
+                        'font-customRegular': currentRoute !== '/home'
+                    }" class="cursor-pointer text-base font-customRegular text-primaryColor hover:font-customBold transition-all">
                         Home
                     </a>
                 </li>
-                <li><a routerLink="/about-us" [ngClass]="{
-    'font-customBold': currentRoute === '/about-us',
-    'font-customRegular': currentRoute !== '/about-us'
-  }" class="cursor-pointer text-base font-customRegular text-primaryColor">
-                        About
-                    </a></li>
-                <li><a routerLink="/product-details" [ngClass]="{
-    'font-customBold': currentRoute === '/product-details',
-    'font-customRegular': currentRoute !== '/product-details'
-  }" class="cursor-pointer text-base font-customRegular text-primaryColor">
-                        Platforms
-                    </a></li>
                 <li>
-                    <a class="cursor-pointer text-base font-customRegular text-primaryColor">
+                    <a routerLink="/about-us" [ngClass]="{
+                        'font-customBold': currentRoute === '/about-us',
+                        'font-customRegular': currentRoute !== '/about-us'
+                    }" class="cursor-pointer text-base font-customRegular text-primaryColor hover:font-customBold transition-all">
+                        About
+                    </a>
+                </li>
+                <li>
+                    <a routerLink="/product-details" [ngClass]="{
+                        'font-customBold': currentRoute === '/product-details',
+                        'font-customRegular': currentRoute !== '/product-details'
+                    }" class="cursor-pointer text-base font-customRegular text-primaryColor hover:font-customBold transition-all">
+                        Platforms
+                    </a>
+                </li>
+                <li>
+                    <a class="cursor-pointer text-base font-customRegular text-primaryColor hover:font-customBold transition-all">
                         Services
                     </a>
                 </li>
                 <li>
                     <a routerLink="/device" [ngClass]="{
-    'font-customBold': currentRoute === '/device',
-    'font-customRegular': currentRoute !== '/device'
-  }" class="cursor-pointer text-base font-customRegular text-primaryColor">
+                        'font-customBold': currentRoute === '/device',
+                        'font-customRegular': currentRoute !== '/device'
+                    }" class="cursor-pointer text-base font-customRegular text-primaryColor hover:font-customBold transition-all">
                         Devices
                     </a>
                 </li>
                 <li>
                     <a routerLink="/news" [ngClass]="{
-    'font-customBold': currentRoute === '/news',
-    'font-customRegular': currentRoute !== '/news'
-  }" class="cursor-pointer text-base font-customRegular text-primaryColor">
+                        'font-customBold': currentRoute === '/news',
+                        'font-customRegular': currentRoute !== '/news'
+                    }" class="cursor-pointer text-base font-customRegular text-primaryColor hover:font-customBold transition-all">
                         News
                     </a>
                 </li>
-
             </ul>
             <button type="button" routerLink="/contact-us" class="theme-button py-3 px-4">Get in Touch</button>
         </div>
+
+        <!-- Mobile Menu Button -->
+        <div class="lg:hidden">
+            <button 
+                type="button" 
+                class="p-2 text-primaryColor hover:text-secondaryColor transition-colors"
+                (click)="toggleMobileMenu()"
+                [attr.aria-expanded]="isMobileMenuOpen"
+                aria-label="Toggle mobile menu">
+                <!-- Hamburger Icon -->
+                <svg *ngIf="!isMobileMenuOpen" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+                <!-- Close Icon -->
+                <svg *ngIf="isMobileMenuOpen" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <!-- Mobile Navigation Menu -->
+    <div 
+        class="lg:hidden absolute top-full left-0 w-full transition-all duration-300 ease-in-out"
+        [ngClass]="{
+            'opacity-100 visible translate-y-0': isMobileMenuOpen,
+            'opacity-0 invisible -translate-y-4': !isMobileMenuOpen
+        }"
+        [style.background-color]="isScrolled ? 'white' : 'rgba(255, 255, 255, 0.95)'"
+        style="backdrop-filter: blur(10px);">
+        
+        <div class="px-4 py-6 border-t border-gray-100 shadow-lg">
+            <ul class="space-y-4">
+                <li>
+                    <a routerLink="/home" 
+                       (click)="closeMobileMenu()"
+                       [ngClass]="{
+                           'font-customBold text-secondaryColor': currentRoute === '/home',
+                           'font-customRegular text-primaryColor': currentRoute !== '/home'
+                       }" 
+                       class="block py-2 px-4 text-base rounded-lg hover:bg-gray-50 transition-all">
+                        Home
+                    </a>
+                </li>
+                <li>
+                    <a routerLink="/about-us" 
+                       (click)="closeMobileMenu()"
+                       [ngClass]="{
+                           'font-customBold text-secondaryColor': currentRoute === '/about-us',
+                           'font-customRegular text-primaryColor': currentRoute !== '/about-us'
+                       }" 
+                       class="block py-2 px-4 text-base rounded-lg hover:bg-gray-50 transition-all">
+                        About
+                    </a>
+                </li>
+                <li>
+                    <a routerLink="/product-details" 
+                       (click)="closeMobileMenu()"
+                       [ngClass]="{
+                           'font-customBold text-secondaryColor': currentRoute === '/product-details',
+                           'font-customRegular text-primaryColor': currentRoute !== '/product-details'
+                       }" 
+                       class="block py-2 px-4 text-base rounded-lg hover:bg-gray-50 transition-all">
+                        Platforms
+                    </a>
+                </li>
+                <li>
+                    <a (click)="closeMobileMenu()"
+                       class="block py-2 px-4 text-base font-customRegular text-primaryColor rounded-lg hover:bg-gray-50 transition-all">
+                        Services
+                    </a>
+                </li>
+                <li>
+                    <a routerLink="/device" 
+                       (click)="closeMobileMenu()"
+                       [ngClass]="{
+                           'font-customBold text-secondaryColor': currentRoute === '/device',
+                           'font-customRegular text-primaryColor': currentRoute !== '/device'
+                       }" 
+                       class="block py-2 px-4 text-base rounded-lg hover:bg-gray-50 transition-all">
+                        Devices
+                    </a>
+                </li>
+                <li>
+                    <a routerLink="/news" 
+                       (click)="closeMobileMenu()"
+                       [ngClass]="{
+                           'font-customBold text-secondaryColor': currentRoute === '/news',
+                           'font-customRegular text-primaryColor': currentRoute !== '/news'
+                       }" 
+                       class="block py-2 px-4 text-base rounded-lg hover:bg-gray-50 transition-all">
+                        News
+                    </a>
+                </li>
+            </ul>
+            
+            <!-- Mobile CTA Button -->
+            <div class="mt-6 pt-4 border-t border-gray-100">
+                <button 
+                    type="button" 
+                    routerLink="/contact-us" 
+                    (click)="closeMobileMenu()"
+                    class="theme-button w-full py-3 px-4 text-center">
+                    Get in Touch
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile Menu Overlay -->
+    <div 
+        *ngIf="isMobileMenuOpen"
+        class="lg:hidden fixed inset-0 bg-black bg-opacity-20 z-[-1] transition-opacity duration-300"
+        (click)="closeMobileMenu()">
     </div>
 </header>
