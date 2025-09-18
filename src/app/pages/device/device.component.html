@@ -1,0 +1,158 @@
+<section class="pb-10">
+    <div class="absolute top-0 end-0 w-full z-[-1]">
+        <img src="/images/top-bg.png" class="w-[75%] absolute top-0 end-0" alt="">
+    </div>
+    <div class="px-32 pt-10 pb-20">
+        <div class="flex items-center gap-5">
+            <div class="border rounded-full px-6 pt-2 pb-2.5 cursor-pointer text-base font-customRegular"
+                [ngClass]="activeTab === 'Devices' ? 'bg-primaryColor text-white border-primaryColor' : 'border-primaryColor text-primaryColor bg-white'"
+                (click)="setActive('Devices')">
+                Devices
+            </div>
+            <div class="border rounded-full px-6 pt-2 pb-2.5 cursor-pointer text-base font-customRegular"
+                [ngClass]="activeTab === 'Kiosks' ? 'bg-primaryColor text-white border-primaryColor' : 'border-primaryColor text-primaryColor bg-white'"
+                (click)="setActive('Kiosks')">
+                Kiosks
+            </div>
+            <div class="border rounded-full px-6 pt-2 pb-2.5 cursor-pointer text-base font-customRegular"
+                [ngClass]="activeTab === 'Kits' ? 'bg-primaryColor text-white border-primaryColor' : 'border-primaryColor text-primaryColor bg-white'"
+                (click)="setActive('Kits')">
+                Kits
+            </div>
+        </div>
+
+        <div class="mt-10 grid gap-16">
+            <div class="grid grid-cols-2 gap-20">
+                <div>
+                    <div class="relative">
+                        <swiper class="thumbSlide" [config]="carouselConfig">
+                            <ng-template swiperSlide class="!h-[500px]"> <img src="/images/ImagePlaceholder.png" class="w-full rounded-xl"
+                                    alt=""> </ng-template>
+                            <ng-template swiperSlide> <img src="/images/ImagePlaceholder.png" class="w-full rounded-xl"
+                                    alt=""> </ng-template>
+                            <ng-template swiperSlide> <img src="/images/ImagePlaceholder.png" class="w-full rounded-xl"
+                                    alt=""> </ng-template>
+                            <ng-template swiperSlide> <img src="/images/ImagePlaceholder.png" class="w-full rounded-xl"
+                                    alt=""> </ng-template>
+                            <ng-template swiperSlide> <img src="/images/ImagePlaceholder.png" class="w-full rounded-xl"
+                                    alt=""> </ng-template>
+                            <ng-template swiperSlide> <img src="/images/ImagePlaceholder.png" class="w-full rounded-xl"
+                                    alt=""> </ng-template>
+                        </swiper>
+
+                        <div class="swiper-button-prev swiper-prev after:content-[''] !w-10">
+                            <img src="/icons/arrow-button-left.svg" alt="" class="w-full">
+                        </div>
+                        <div class="swiper-button-next swiper-next after:content-[''] !w-10">
+                            <img src="/icons/arrow-button-right.svg" alt="" class="w-full">
+                        </div>
+                    </div>
+
+                </div>
+                <div class="">
+                    <h2 class="text-black text-3xl font-customBold mb-5">MR 300</h2>
+                    <ul class="ms-5 grid gap-2">
+                        <li class="list-disc text-base font-customRegular text-[#00000099]">5” Color TFT display</li>
+                        <li class="list-disc text-base font-customRegular text-[#00000099]">12 Leads simultaneous ECG acquisition</li>
+                        <li class="list-disc text-base font-customRegular text-[#00000099]">3 Channel ECG Recording</li>
+                        <li class="list-disc text-base font-customRegular text-[#00000099]">Interpretation Facility</li>
+                        <li class="list-disc text-base font-customRegular text-[#00000099]">Memory storage for 5 patients</li>
+                        <li class="list-disc text-base font-customRegular text-[#00000099]">Auto & Manual mode of operation</li>
+                        <li class="list-disc text-base font-customRegular text-[#00000099]">PDF convertor to transfer ECG from device to USB</li>
+                        <li class="list-disc text-base font-customRegular text-[#00000099]">Display of 12 Lead ECG waveform</li>
+                        <li class="list-disc text-base font-customRegular text-[#00000099]">ECG lead annotation facility</li>
+                    </ul>
+                    <button type="button" class="border mt-8 border-[#009EE0] px-8 py-2.5 text-[#009EE0] font-customRegular text-sm rounded-full">Download Brochure</button>
+                </div>
+            </div>
+
+             <div class="grid grid-cols-2 gap-20">
+                <div>
+                    <div class="relative">
+                        <swiper class="thumbSlide" [config]="carouselConfig1">
+                            <ng-template swiperSlide class="!h-[500px]"> <img src="/images/ImagePlaceholder.png" class="w-full rounded-xl"
+                                    alt=""> </ng-template>
+                            <ng-template swiperSlide> <img src="/images/ImagePlaceholder.png" class="w-full rounded-xl"
+                                    alt=""> </ng-template>
+                            <ng-template swiperSlide> <img src="/images/ImagePlaceholder.png" class="w-full rounded-xl"
+                                    alt=""> </ng-template>
+                            <ng-template swiperSlide> <img src="/images/ImagePlaceholder.png" class="w-full rounded-xl"
+                                    alt=""> </ng-template>
+                            <ng-template swiperSlide> <img src="/images/ImagePlaceholder.png" class="w-full rounded-xl"
+                                    alt=""> </ng-template>
+                            <ng-template swiperSlide> <img src="/images/ImagePlaceholder.png" class="w-full rounded-xl"
+                                    alt=""> </ng-template>
+                        </swiper>
+
+                        <div class="swiper-button-prev swiper-prev1 after:content-[''] !w-10">
+                            <img src="/icons/arrow-button-left.svg" alt="" class="w-full">
+                        </div>
+                        <div class="swiper-button-next swiper-next1 after:content-[''] !w-10">
+                            <img src="/icons/arrow-button-right.svg" alt="" class="w-full">
+                        </div>
+                    </div>
+
+                </div>
+                <div class="">
+                    <h2 class="text-black text-3xl font-customBold mb-5">MR 300</h2>
+                    <ul class="ms-5 grid gap-2">
+                        <li class="list-disc text-base font-customRegular text-[#00000099]">5” Color TFT display</li>
+                        <li class="list-disc text-base font-customRegular text-[#00000099]">12 Leads simultaneous ECG acquisition</li>
+                        <li class="list-disc text-base font-customRegular text-[#00000099]">3 Channel ECG Recording</li>
+                        <li class="list-disc text-base font-customRegular text-[#00000099]">Interpretation Facility</li>
+                        <li class="list-disc text-base font-customRegular text-[#00000099]">Memory storage for 5 patients</li>
+                        <li class="list-disc text-base font-customRegular text-[#00000099]">Auto & Manual mode of operation</li>
+                        <li class="list-disc text-base font-customRegular text-[#00000099]">PDF convertor to transfer ECG from device to USB</li>
+                        <li class="list-disc text-base font-customRegular text-[#00000099]">Display of 12 Lead ECG waveform</li>
+                        <li class="list-disc text-base font-customRegular text-[#00000099]">ECG lead annotation facility</li>
+                    </ul>
+                    <button type="button" class="border mt-8 border-[#009EE0] px-8 py-2.5 text-[#009EE0] font-customRegular text-sm rounded-full">Download Brochure</button>
+                </div>
+            </div>
+
+             <div class="grid grid-cols-2 gap-20">
+                <div>
+                    <div class="relative">
+                        <swiper class="thumbSlide" [config]="carouselConfig2">
+                            <ng-template swiperSlide class="!h-[500px]"> <img src="/images/ImagePlaceholder.png" class="w-full rounded-xl"
+                                    alt=""> </ng-template>
+                            <ng-template swiperSlide> <img src="/images/ImagePlaceholder.png" class="w-full rounded-xl"
+                                    alt=""> </ng-template>
+                            <ng-template swiperSlide> <img src="/images/ImagePlaceholder.png" class="w-full rounded-xl"
+                                    alt=""> </ng-template>
+                            <ng-template swiperSlide> <img src="/images/ImagePlaceholder.png" class="w-full rounded-xl"
+                                    alt=""> </ng-template>
+                            <ng-template swiperSlide> <img src="/images/ImagePlaceholder.png" class="w-full rounded-xl"
+                                    alt=""> </ng-template>
+                            <ng-template swiperSlide> <img src="/images/ImagePlaceholder.png" class="w-full rounded-xl"
+                                    alt=""> </ng-template>
+                        </swiper>
+
+                        <div class="swiper-button-prev swiper-prev2 after:content-[''] !w-10">
+                            <img src="/icons/arrow-button-left.svg" alt="" class="w-full">
+                        </div>
+                        <div class="swiper-button-next swiper-next2 after:content-[''] !w-10">
+                            <img src="/icons/arrow-button-right.svg" alt="" class="w-full">
+                        </div>
+                    </div>
+
+                </div>
+                <div class="">
+                    <h2 class="text-black text-3xl font-customBold mb-5">MR 300</h2>
+                    <ul class="ms-5 grid gap-2">
+                        <li class="list-disc text-base font-customRegular text-[#00000099]">5” Color TFT display</li>
+                        <li class="list-disc text-base font-customRegular text-[#00000099]">12 Leads simultaneous ECG acquisition</li>
+                        <li class="list-disc text-base font-customRegular text-[#00000099]">3 Channel ECG Recording</li>
+                        <li class="list-disc text-base font-customRegular text-[#00000099]">Interpretation Facility</li>
+                        <li class="list-disc text-base font-customRegular text-[#00000099]">Memory storage for 5 patients</li>
+                        <li class="list-disc text-base font-customRegular text-[#00000099]">Auto & Manual mode of operation</li>
+                        <li class="list-disc text-base font-customRegular text-[#00000099]">PDF convertor to transfer ECG from device to USB</li>
+                        <li class="list-disc text-base font-customRegular text-[#00000099]">Display of 12 Lead ECG waveform</li>
+                        <li class="list-disc text-base font-customRegular text-[#00000099]">ECG lead annotation facility</li>
+                    </ul>
+                    <button type="button" class="border mt-8 border-[#009EE0] px-8 py-2.5 text-[#009EE0] font-customRegular text-sm rounded-full">Download Brochure</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

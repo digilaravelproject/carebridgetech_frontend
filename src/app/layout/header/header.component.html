@@ -1,0 +1,54 @@
+<header class="px-14" [ngClass]="isScrolled ? 'bg-white shadow-md' : 'bg-transparent'">
+    <div class="flex items-center justify-between py-5">
+        <div>
+            <img src="/images/logo.svg" class="w-48" alt="">
+        </div>
+        <div class="flex items-center gap-8">
+            <ul class="flex items-center gap-8">
+                <li>
+                    <a routerLink="/home" [ngClass]="{
+    'font-customBold': currentRoute === '/home',
+    'font-customRegular': currentRoute !== '/home'
+  }" class="cursor-pointer text-base font-customRegular text-primaryColor">
+                        Home
+                    </a>
+                </li>
+                <li><a routerLink="/about-us" [ngClass]="{
+    'font-customBold': currentRoute === '/about-us',
+    'font-customRegular': currentRoute !== '/about-us'
+  }" class="cursor-pointer text-base font-customRegular text-primaryColor">
+                        About
+                    </a></li>
+                <li><a routerLink="/product-details" [ngClass]="{
+    'font-customBold': currentRoute === '/product-details',
+    'font-customRegular': currentRoute !== '/product-details'
+  }" class="cursor-pointer text-base font-customRegular text-primaryColor">
+                        Platforms
+                    </a></li>
+                <li>
+                    <a class="cursor-pointer text-base font-customRegular text-primaryColor">
+                        Services
+                    </a>
+                </li>
+                <li>
+                    <a routerLink="/device" [ngClass]="{
+    'font-customBold': currentRoute === '/device',
+    'font-customRegular': currentRoute !== '/device'
+  }" class="cursor-pointer text-base font-customRegular text-primaryColor">
+                        Devices
+                    </a>
+                </li>
+                <li>
+                    <a routerLink="/news" [ngClass]="{
+    'font-customBold': currentRoute === '/news',
+    'font-customRegular': currentRoute !== '/news'
+  }" class="cursor-pointer text-base font-customRegular text-primaryColor">
+                        News
+                    </a>
+                </li>
+
+            </ul>
+            <button type="button" routerLink="/contact-us" class="theme-button py-3 px-4">Get in Touch</button>
+        </div>
+    </div>
+</header>

@@ -1,0 +1,355 @@
+<section class="pb-10">
+    <div class="absolute top-0 end-0 w-full z-[-1]">
+        <img src="/images/top-bg.png" class="w-[75%] absolute top-0 end-0" alt="">
+    </div>
+    <div class="px-32 pt-10">
+        <div class="flex items-center gap-5">
+            <div class="border rounded-full px-6 pt-2 pb-2.5 cursor-pointer text-base font-customRegular"
+                [ngClass]="activeTab === 'Consensus' ? 'bg-primaryColor text-white border-primaryColor' : 'border-primaryColor text-primaryColor bg-white'"
+                (click)="setActive('Consensus')">
+                Consensus
+            </div>
+            <div class="border rounded-full px-6 pt-2 pb-2.5 cursor-pointer text-base font-customRegular"
+                [ngClass]="activeTab === 'CoddleOnline' ? 'bg-primaryColor text-white border-primaryColor' : 'border-primaryColor text-primaryColor bg-white'"
+                (click)="setActive('CoddleOnline')">
+                CoddleOnline
+            </div>
+            <div class="border rounded-full px-6 pt-2 pb-2.5 cursor-pointer text-base font-customRegular"
+                [ngClass]="activeTab === 'Rhythms24x7' ? 'bg-primaryColor text-white border-primaryColor' : 'border-primaryColor text-primaryColor bg-white'"
+                (click)="setActive('Rhythms24x7')">
+                Rhythms24x7
+            </div>
+        </div>
+
+        <div class="mt-10">
+            <div class="grid grid-cols-2 gap-20" *ngIf="activeTab === 'Consensus'">
+                <div>
+                    <div class="mb-4">
+                        <img src="/images/consensus.png" class="w-[35%]" alt="">
+                    </div>
+                    <p class="text-base font-customRegular text-grayColor">Secure telemedicine and tele-consulting
+                        platform
+                        that enables healthcare providers to deliver quality
+                        care anytime, anywhere. It bridges the gap between patients and doctors through real-time video
+                        consultations, medical data sharing, and collaborative treatment planning.</p>
+                    <div class="border border-primaryColor rounded-2xl p-5 mt-5">
+                        <div class="flex items-center w-full gap-5">
+                            <div class="w-[20%] h-[120px] grid place-items-center">
+                                <img src="/images/displayNo.png" class="object-contain" alt="">
+                            </div>
+                            <div class="h-full flex flex-col justify-between w-[70%] gap-5">
+                                <h3 class="text-2xl font-customBold text-black">ABDM Certified Software</h3>
+                                <p class="text-base font-customRegular text-[#00000099]">Enabling seamless integration
+                                    with
+                                    India’s NDHM ecosystem for secure, interoperable patient data</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="relative">
+                        <swiper class="thumbSlide" [config]="carouselConfig">
+                            <ng-template swiperSlide> <img src="/images/ImagePlaceholder.png" class="w-full rounded-xl"
+                                    alt=""> </ng-template>
+                            <ng-template swiperSlide> <img src="/images/ImagePlaceholder.png" class="w-full rounded-xl"
+                                    alt=""> </ng-template>
+                            <ng-template swiperSlide> <img src="/images/ImagePlaceholder.png" class="w-full rounded-xl"
+                                    alt=""> </ng-template>
+                            <ng-template swiperSlide> <img src="/images/ImagePlaceholder.png" class="w-full rounded-xl"
+                                    alt=""> </ng-template>
+                            <ng-template swiperSlide> <img src="/images/ImagePlaceholder.png" class="w-full rounded-xl"
+                                    alt=""> </ng-template>
+                            <ng-template swiperSlide> <img src="/images/ImagePlaceholder.png" class="w-full rounded-xl"
+                                    alt=""> </ng-template>
+                        </swiper>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-20" *ngIf="activeTab === 'CoddleOnline'">
+                <div>
+                    <div class="mb-4">
+                        <img src="/images/coddle-logo.png" class="w-[85%] object-contain" alt="">
+                    </div>
+                    <p class="text-base font-customRegular text-grayColor">Every 10 minutes in India, a mother dies from
+                        pregnancy-related complications—most of them preventable. With 30M pregnancies annually and 59%
+                        classified as high-risk, there is an urgent need for continuous monitoring, timely
+                        interventions, and better doctor-patient connectivity.
+                        Coddle Online, is a cloud-based maternal health platform designed to reduce maternal mortality
+                        by connecting patients, doctors, and health workers on a single digital ecosystem. It provides
+                        real-time monitoring, electronic health records (EHR), and teleconsultations, ensuring safer
+                        outcomes for mothers and newborns.</p>
+
+                </div>
+                <div>
+                    <div class="relative">
+                        <swiper class="thumbSlide" [config]="carouselConfig">
+                            <ng-template swiperSlide> <img src="/images/ImagePlaceholder.png" class="w-full rounded-xl"
+                                    alt=""> </ng-template>
+                            <ng-template swiperSlide> <img src="/images/ImagePlaceholder.png" class="w-full rounded-xl"
+                                    alt=""> </ng-template>
+                            <ng-template swiperSlide> <img src="/images/ImagePlaceholder.png" class="w-full rounded-xl"
+                                    alt=""> </ng-template>
+                            <ng-template swiperSlide> <img src="/images/ImagePlaceholder.png" class="w-full rounded-xl"
+                                    alt=""> </ng-template>
+                            <ng-template swiperSlide> <img src="/images/ImagePlaceholder.png" class="w-full rounded-xl"
+                                    alt=""> </ng-template>
+                            <ng-template swiperSlide> <img src="/images/ImagePlaceholder.png" class="w-full rounded-xl"
+                                    alt=""> </ng-template>
+                        </swiper>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-20" *ngIf="activeTab === 'Rhythms24x7'">
+                <div>
+                    <div class="mb-4">
+                        <img src="/images/rhythams.png" class="w-[70%] object-contain" alt="">
+                    </div>
+                    <p class="text-base font-customRegular text-grayColor">Rhythms24x7 is a cutting-edge web-based
+                        tele-cardiology platform designed for real-time sharing of vital cardiac parameters and remote
+                        management of cardiac emergencies. Our ultra-compact device paired with a secure cloud-based
+                        data hub revolutionizes how cardiac data is captured, shared, and managed, facilitating early
+                        diagnosis and enhancing healthcare provider and patient experience. With seamless integration to
+                        hospitals and ambulances, Rhythms24x7 ensures critical patients receive urgent treatment within
+                        the golden hour.</p>
+
+                </div>
+                <div>
+                    <div class="relative">
+                        <swiper class="thumbSlide" [config]="carouselConfig">
+                            <ng-template swiperSlide> <img src="/images/ImagePlaceholder.png" class="w-full rounded-xl"
+                                    alt=""> </ng-template>
+                            <ng-template swiperSlide> <img src="/images/ImagePlaceholder.png" class="w-full rounded-xl"
+                                    alt=""> </ng-template>
+                            <ng-template swiperSlide> <img src="/images/ImagePlaceholder.png" class="w-full rounded-xl"
+                                    alt=""> </ng-template>
+                            <ng-template swiperSlide> <img src="/images/ImagePlaceholder.png" class="w-full rounded-xl"
+                                    alt=""> </ng-template>
+                            <ng-template swiperSlide> <img src="/images/ImagePlaceholder.png" class="w-full rounded-xl"
+                                    alt=""> </ng-template>
+                            <ng-template swiperSlide> <img src="/images/ImagePlaceholder.png" class="w-full rounded-xl"
+                                    alt=""> </ng-template>
+                        </swiper>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="bg-backgroundColor px-32 py-10 mt-14">
+        <h2 class="text-xl font-customBold text-primaryColor uppercase">HOW IT <span
+                class="text-secondaryColor">WORKS</span></h2>
+        <div class="mt-5">
+            <img src="/images/work.svg" class="w-full" alt="">
+        </div>
+    </div>
+
+    <div class="px-32 mt-14">
+        <h2 class="text-xl font-customBold text-primaryColor uppercase">WHAT YOU <span
+                class="text-secondaryColor">achieve</span></h2>
+        <div class="mt-8 grid grid-cols-2 gap-10">
+            <div class="flex items-center gap-6">
+                <div class="w-[12%]">
+                    <img src="/images/reach-remote.svg" class="w-full" alt="">
+                </div>
+                <div class="grid gap-2 w-[88%]">
+                    <h4 class="text-xl font-customBold text-black">Reach Remote Communities</h4>
+                    <p class="text-base text-[#00000099] font-customRegular">Deliver quality healthcare to rural and
+                        underserved areas through teleconsultations and remote diagnostics</p>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-6">
+                <div class="w-[12%]">
+                    <img src="/images/cut-travel.svg" class="w-full" alt="">
+                </div>
+                <div class="grid gap-2 w-[88%]">
+                    <h4 class="text-xl font-customBold text-black">Cut Travel & Wait Times</h4>
+                    <p class="text-base text-[#00000099] font-customRegular">Connect patients with doctors instantly,
+                        eliminating long commutes and clinic queues</p>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-6">
+                <div class="w-[12%]">
+                    <img src="/images/enable-expert.svg" class="w-full" alt="">
+                </div>
+                <div class="grid gap-2 w-[88%]">
+                    <h4 class="text-xl font-customBold text-black">Enable Expert Collaboration</h4>
+                    <p class="text-base text-[#00000099] font-customRegular">Bring multiple specialists together
+                        virtually for faster, better clinical decisions</p>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-6">
+                <div class="w-[12%]">
+                    <img src="/images/manage-health.svg" class="w-full" alt="">
+                </div>
+                <div class="grid gap-2 w-[88%]">
+                    <h4 class="text-xl font-customBold text-black">Manage Health Proactively</h4>
+                    <p class="text-base text-[#00000099] font-customRegular">Support chronic disease management and
+                        preventive care with continuous remote monitoring</p>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="mt-20">
+            <h2 class="text-xl font-customBold text-primaryColor uppercase">who is it<span class="text-secondaryColor">
+                    for</span></h2>
+
+            <div class="mt-8 grid grid-cols-3 gap-10">
+                <div class="grid gap-4 place-content-baseline">
+                    <div class="w-[20%]">
+                        <img src="/images/ImagePlaceholder.png" class="w-full rounded-md" alt="">
+                    </div>
+                    <div class="grid gap-2 w-[88%]">
+                        <h4 class="text-2xl font-customBold text-black">Primary Health Centres</h4>
+                        <p class="text-lg text-[#00000099] font-customRegular">Lorem ipsum dolor sit amet consecte
+                            turole adipiscing elit semper dalaracc lacus velolte facilisis volutpat est velitolm.</p>
+                    </div>
+                </div>
+
+                <div class="grid gap-4 place-content-baseline">
+                    <div class="w-[20%]">
+                        <img src="/images/ImagePlaceholder.png" class="w-full rounded-md" alt="">
+                    </div>
+                    <div class="grid gap-2 w-[88%]">
+                        <h4 class="text-2xl font-customBold text-black">Hospitals & Clinics</h4>
+                        <p class="text-lg text-[#00000099] font-customRegular">All patient data in one place to
+                            facilitate faster and coordinated patient care</p>
+                    </div>
+                </div>
+
+                <div class="grid gap-4 place-content-baseline">
+                    <div class="w-[20%]">
+                        <img src="/images/ImagePlaceholder.png" class="w-full rounded-md" alt="">
+                    </div>
+                    <div class="grid gap-2 w-[88%]">
+                        <h4 class="text-2xl font-customBold text-black">Home Care</h4>
+                        <p class="text-lg text-[#00000099] font-customRegular">Provide virtual check-ups, remote
+                            monitoring, and personalized chronic care without clinic visits</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="bg-backgroundColor px-32 py-16 mt-14">
+        <div *ngIf="activeTab === 'Consensus' || activeTab === 'Rhythms24x7'">
+            <h2 class="text-3xl font-customBold text-primaryColor capitalize text-center">Flexible Deployment, <span
+                    class="text-secondaryColor">Maximum Impact</span></h2>
+
+            <div class="mt-10 grid grid-cols-4 gap-20">
+                <div class="place-content-center px-5">
+                    <img src="/images/bundle.svg" class="size-36 mx-auto" alt="">
+                    <p class="text-black font-customMedium text-center mt-5 text-xl">Bundled with CareNest Kiosks</p>
+                </div>
+                <div class="place-content-center px-5">
+                    <img src="/images/standalone.svg" class="size-36 mx-auto" alt="">
+                    <p class="text-black font-customMedium text-center mt-5 text-xl">Standalone Software
+                        as a Service</p>
+                </div>
+                <div class="place-content-center px-5">
+                    <div class="h-36 place-content-center">
+                        <img src="/images/ImagePlaceholder.png" class="size-20 mx-auto" alt="">
+                    </div>
+                    <p class="text-black font-customMedium text-center mt-5 text-xl">Multiple Device
+                        Integration</p>
+                </div>
+                <div class="place-content-center px-5">
+                    <img src="/images/portable.svg" class="size-36 mx-auto" alt="">
+                    <p class="text-black font-customMedium text-center mt-5 text-xl">Portable Health Monitoring</p>
+                </div>
+            </div>
+        </div>
+
+        <div *ngIf="activeTab === 'CoddleOnline'">
+            <h2 class="text-3xl font-customBold text-primaryColor capitalize text-center">Key <span
+                    class="text-secondaryColor">Solutions</span></h2>
+
+            <div class="mt-10 grid grid-cols-4 gap-14">
+                <div class="bg-white rounded-xl p-5 border border-borderColor">
+                    <img src="/images/ImagePlaceholder.png" class="w-full mx-auto" alt="">
+                    <div class="mt-5">
+                        <h4 class="text-black font-customMedium text-lg pb-2">Mobile app</h4>
+                        <p class="text-textGray font-customRegular text-sm">Track maternal vitals and fetal health
+                            remotely</p>
+                    </div>
+
+                </div>
+                <div class="bg-white rounded-xl p-5 border border-borderColor">
+                    <img src="/images/ImagePlaceholder.png" class="w-full mx-auto" alt="">
+                    <div class="mt-5">
+                        <h4 class="text-black font-customMedium text-lg pb-2">Web app</h4>
+                        <p class="text-textGray font-customRegular text-sm">Secure virtual care with complete patient
+                            history</p>
+                    </div>
+
+                </div>
+                <div class="bg-white rounded-xl p-5 border border-borderColor">
+                    <img src="/images/ImagePlaceholder.png" class="w-full mx-auto" alt="">
+                    <div class="mt-5">
+                        <h4 class="text-black font-customMedium text-lg pb-2">Intrapartum App</h4>
+                        <p class="text-textGray font-customRegular text-sm">Monitor up to 8 patients simultaneously
+                            during</p>
+                    </div>
+
+                </div>
+                <div class="bg-white rounded-xl p-5 border border-borderColor">
+                    <img src="/images/ImagePlaceholder.png" class="w-full mx-auto" alt="">
+                    <div class="mt-5">
+                        <h4 class="text-black font-customMedium text-lg pb-2">Portable Kit</h4>
+                        <p class="text-textGray font-customRegular text-sm">Provide high-risk patients with at-home
+                            monitoring tools</p>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="px-32 mt-14">
+        <div class="bg-[#005783] p-16 px-20 rounded-2xl flex items-center w-full gap-10"
+            *ngIf="activeTab === 'Consensus'">
+            <div class="pe-24">
+                <h5 class="text-2xl font-customBold text-white pb-3">Curious About How Consensus Could Work for You?
+                </h5>
+                <p class="text-lg text-white font-customRegular">Whether you’re exploring telemedicine for the first
+                    time or looking to upgrade your current setup, we’ll walk you through how Consensus can fit into
+                    your care delivery model</p>
+            </div>
+            <button class="theme-button w-1/5 py-3">Get in Touch</button>
+        </div>
+
+        <div class="bg-[#005783] p-16 px-20 rounded-2xl flex items-center w-full gap-10"
+            *ngIf="activeTab === 'CoddleOnline'">
+            <div class="pe-24">
+                <h5 class="text-2xl font-customBold text-white pb-3">Transform Fetal & Maternal Health with Coddle
+                    Online
+                </h5>
+                <p class="text-lg text-white font-customRegular">Take technology to the communities that need it
+                    most—empowering doctors, nurses, and mothers with safer, smarter pregnancy care.</p>
+            </div>
+            <button class="theme-button w-1/5 py-3">Get in Touch</button>
+        </div>
+
+        <div class="bg-[#005783] p-16 px-20 rounded-2xl flex items-center w-full gap-10"
+            *ngIf="activeTab === 'Rhythms24x7'">
+            <div class="pe-24">
+                <h5 class="text-2xl font-customBold text-white pb-3">Ready to Transform Cardiac Care?
+                </h5>
+                <p class="text-lg text-white font-customRegular">Join the revolution in cardiac emergency management
+                    with Rhythms24x7. Experience real-time monitoring, instant data sharing, and life-saving rapid
+                    response capabilities.</p>
+            </div>
+            <button class="theme-button w-1/5 py-3">Get in Touch</button>
+        </div>
+    </div>
+
+</section>

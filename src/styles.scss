@@ -1,0 +1,76 @@
+/* You can add global styles to this file, and also import other style files */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import 'swiper/scss';
+@import 'swiper/scss/navigation';
+@import 'swiper/scss/pagination';
+@import 'swiper/scss/thumbs';
+@import 'swiper/scss/free-mode';
+@import 'swiper/scss/grid';
+
+// Font
+@font-face {
+    font-family: 'DMSans-Black';
+    src: url('/fonts/DMSans-Black.ttf') format('truetype');
+}
+@font-face {
+    font-family: 'DMSans-Bold';
+    src: url('/fonts/DMSans-Bold.ttf') format('truetype');
+}
+@font-face {
+    font-family: 'DMSans-ExtraBold';
+    src: url('/fonts/DMSans-ExtraBold.ttf') format('truetype');
+}
+@font-face {
+    font-family: 'DMSans-ExtraLight';
+    src: url('/fonts/DMSans-ExtraLight.ttf') format('truetype');
+}
+@font-face {
+    font-family: 'DMSans-Light';
+    src: url('/fonts/DMSans-Light.ttf') format('opentype');
+}
+@font-face {
+    font-family: 'DMSans-Medium';
+    src: url('/fonts/DMSans-Medium.ttf') format('opentype');
+}
+@font-face {
+    font-family: 'DMSans-Regular';
+    src: url('/fonts/DMSans-Regular.ttf') format('opentype');
+}
+@font-face {
+    font-family: 'DMSans-SemiBold';
+    src: url('/fonts/DMSans-SemiBold.ttf') format('opentype');
+}
+@font-face {
+    font-family: 'DMSans-Thin';
+    src: url('/fonts/DMSans-Thin.ttf') format('opentype');
+}
+
+@layer components {
+      .theme-button{
+        @apply text-sm px-4 bg-primaryColor py-2 font-customBold text-white rounded-full text-center cursor-pointer
+    }
+    .lable{
+        @apply font-customBold text-black text-sm pb-2 block
+    }
+    .input-box{
+        @apply bg-white px-4 w-full py-6 text-black text-sm font-customRegular placeholder:text-[#ADABC3] rounded-full focus:outline-none focus:border-0
+    }
+}
+
+.swiper-pagination-bullet
+ {
+    background: #D4D2E3 !important;
+    height: 12px;
+    width: 12px;
+    opacity: 10 !important;
+}
+.swiper-pagination-bullet-active {
+    background: #5D5A88 !important;
+    opacity: 10 !important;
+}
+.swiper-pagination-fraction, .swiper-pagination-custom, .swiper-horizontal > .swiper-pagination-bullets, .swiper-pagination-bullets.swiper-pagination-horizontal {
+    bottom: 20px !important;
+}
