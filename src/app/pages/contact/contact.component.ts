@@ -1,12 +1,113 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ContentService } from '../../services/content.service';
 
 @Component({
   selector: 'app-contact',
   standalone: true,
-  imports: [],
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './contact.component.html',
   styleUrl: './contact.component.scss'
 })
-export class ContactComponent {
+export class ContactComponent implements OnInit {
+  // Dynamic content properties
+  headerContent: any = {};
+  contactDetailsContent: any = {};
+  
+  // Form handling
+  contactForm: FormGroup;
+  isSubmitting = false;
+  submitSuccess = false;
+  submitError = false;
+  
+  // Loading states
+  isLoading = true;
 
+  constructor(
+    private contentService: ContentService,
+    private fb: FormBuilder
+  ) {
+    this.contactForm = this.fb.group({
+      name: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
+      phone: [''],
+      company: [''],
+      message: ['', Validators.required]
+    });
+  }
+
+  ngOnInit() {
+    this.loadPageContent();
+  }
+
+  loadPageContent() {
+    this.contentService.getPageContent('contact').subscribe({
+      next: (data) => {
+        this.headerContent = data.content['header'] || {};
+        this.contactDetailsContent = data.content['contact_details'] || {};
+        this.isLoading = false;
+      },
+      error: (error) => {
+        console.error('Error loading contact content:', error);
+        this.isLoading = false;
+        this.setFallbackContent();
+      }
+    });
+  }
+
+  setFallbackContent() {
+    this.headerContent = {
+      title: 'Get in',
+      subtitle: 'touch today',
+      description: 'Lorem ipsum dolor sit amet consectetur adipiscing elit semper dalar elementum tempus hac tellus libero accumsan.'
+    };
+    this.contactDetailsContent = {
+      section_title: 'Contact details',
+      location_label: 'Our location',
+      location_value: '58 Middle Point Rd\nSan Francisco, 94124',
+      phone_label: 'Call us',
+      phone_value: '(123) 456 - 789',
+      email_label: 'Email us',
+      email_value: 'contact@company.com'
+    };
+  }
+
+  onSubmit() {
+    if (this.contactForm.valid && !this.isSubmitting) {
+      this.isSubmitting = true;
+      this.submitError = false;
+      
+      this.contentService.submitContactForm(this.contactForm.value).subscribe({
+        next: (response) => {
+          this.submitSuccess = true;
+          this.contactForm.reset();
+          this.isSubmitting = false;
+          setTimeout(() => {
+            this.submitSuccess = false;
+          }, 5000);
+        },
+        error: (error) => {
+          console.error('Error submitting form:', error);
+          this.submitError = true;
+          this.isSubmitting = false;
+        }
+      });
+    }
+  }
+
+  getFormattedLocation(): string {
+    const location = this.contactDetailsContent.location_value || '58 Middle Point Rd\nSan Francisco, 94124';
+    return location.replace(/\n/g, '<br>');
+  }
+
+  getPhoneHref(): string {
+    const phone = this.contactDetailsContent.phone_value || '(123) 456 - 789';
+    return 'tel:' + phone.replace(/[^0-9]/g, '');
+  }
+
+  getEmailHref(): string {
+    const email = this.contactDetailsContent.email_value || 'contact@company.com';
+    return 'mailto:' + email;
+  }
 }

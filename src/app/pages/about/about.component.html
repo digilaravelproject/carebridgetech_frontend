@@ -3,47 +3,63 @@
         <img src="/images/top-bg.png" class="w-[75%] absolute top-0 end-0" alt="">
     </div>
 
-    <div class="px-4 sm:px-8 lg:px-32 pt-8 sm:pt-12 lg:pt-16">
+    <!-- Loading State -->
+    <div *ngIf="isLoading" class="px-4 sm:px-8 lg:px-32 pt-8 sm:pt-12 lg:pt-16">
+        <div class="flex justify-center items-center h-64">
+            <div class="animate-spin rounded-full h-32 w-32 border-b-2 border-primaryColor"></div>
+        </div>
+    </div>
+
+    <!-- Content -->
+    <div *ngIf="!isLoading" class="px-4 sm:px-8 lg:px-32 pt-8 sm:pt-12 lg:pt-16">
+        <!-- Dynamic Header -->
         <div>
-            <h2 class="text-3xl sm:text-4xl lg:text-5xl font-customSemiBold text-primaryColor capitalize text-center">We're here to<br> <span
-                    class="text-secondaryColor"> guarantee your success</span></h2>
+            <h2 class="text-3xl sm:text-4xl lg:text-5xl font-customSemiBold text-primaryColor capitalize text-center">
+                {{ headerContent.main_title || "We're here to" }}<br> 
+                <span class="text-secondaryColor">{{ headerContent.subtitle || 'guarantee your success' }}</span>
+            </h2>
         </div>
 
+        <!-- Dynamic Company Section -->
         <div class="mt-16 sm:mt-24 lg:mt-40">
             <div class="bg-[#005783] p-6 sm:p-8 lg:p-10 rounded-2xl lg:rounded-3xl w-full pb-20 sm:pb-30 lg:pb-40">
-                <p class="text-base sm:text-lg lg:text-xl text-white font-customLight leading-7 sm:leading-8 lg:leading-9">At Carebridge Technologies, a subsidiary of
-                    Maestros Electronics, we're driven by one goal: to connect people to care—anywhere, anytime. By
-                    combining innovative devices, a secure digital platform, and expert clinical support, we make it
-                    simple for providers to extend their reach beyond clinic walls.</p>
+                <p class="text-base sm:text-lg lg:text-xl text-white font-customLight leading-7 sm:leading-8 lg:leading-9">
+                    {{ companyContent.description || "At Carebridge Technologies, a subsidiary of Maestros Electronics, we're driven by one goal: to connect people to care—anywhere, anytime. By combining innovative devices, a secure digital platform, and expert clinical support, we make it simple for providers to extend their reach beyond clinic walls." }}
+                </p>
             </div>
 
             <div class="w-[95%] sm:w-[90%] mx-auto relative top-[-40px] sm:top-[-60px] lg:top-[-80px]">
-                <img src="/images/untitled.png" class="w-full" alt="">
+                <img [src]="companyContent.image || '/images/untitled.png'" class="w-full" [alt]="headerContent.main_title">
             </div>
         </div>
 
+        <!-- Dynamic Mission Section -->
         <div class="mt-8 lg:mt-10">
-            <h2 class="text-3xl sm:text-4xl lg:text-5xl font-customSemiBold text-primaryColor text-center">We're here for you<br> <span
-                    class="text-secondaryColor"> no matter where you are</span></h2>
+            <h2 class="text-3xl sm:text-4xl lg:text-5xl font-customSemiBold text-primaryColor text-center">
+                {{ missionContent.section_title || "We're here for you" }}<br> 
+                <span class="text-secondaryColor">{{ missionContent.section_subtitle || 'no matter where you are' }}</span>
+            </h2>
             <div class="w-[60%] sm:w-[50%] lg:w-[40%] mx-auto h-1 bg-secondaryColor mt-3"></div>
         </div>
 
-
     </div>
 
+    <!-- World Map -->
     <div class="mt-12 sm:mt-16 lg:mt-20">
-        <img src="/images/WorldMap.png" class="w-full h-full" alt="">
+        <img [src]="missionContent.world_map || '/images/WorldMap.png'" class="w-full h-full" alt="World Map">
     </div>
 
     <div class="mt-12 sm:mt-16 lg:mt-20 px-4 sm:px-8 lg:px-32">
         <div>
+            <!-- Dynamic Mission Content -->
             <div>
-                <h2 class="text-2xl sm:text-3xl font-customBold text-primaryColor capitalize text-center">Our <span
-                        class="text-secondaryColor">Mission</span></h2>
-                <p class="mt-3 text-sm sm:text-base font-customRegular text-[#3E3E3E] text-center w-full sm:w-[80%] lg:w-[50%] mx-auto px-4 sm:px-0">Build a wellness
-                    ecosystem that empowers individuals, eases the burden on healthcare systems, and catches risks
-                    before
-                    they become crises.</p>
+                <h2 class="text-2xl sm:text-3xl font-customBold text-primaryColor capitalize text-center">
+                    {{ missionContent.mission_title || 'Our' }} 
+                    <span class="text-secondaryColor">{{ missionContent.mission_subtitle || 'Mission' }}</span>
+                </h2>
+                <p class="mt-3 text-sm sm:text-base font-customRegular text-[#3E3E3E] text-center w-full sm:w-[80%] lg:w-[50%] mx-auto px-4 sm:px-0">
+                    {{ missionContent.mission_description || 'Build a wellness ecosystem that empowers individuals, eases the burden on healthcare systems, and catches risks before they become crises.' }}
+                </p>
             </div>
 
             <div class="mt-8 sm:mt-10 lg:mt-14 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 lg:gap-10">

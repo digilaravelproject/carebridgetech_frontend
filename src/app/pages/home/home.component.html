@@ -3,55 +3,86 @@
         <img src="/images/top-bg.png" class="w-[78%] absolute top-0 end-0" alt="">
     </div>
 
-    <div class="px-4 sm:px-8 lg:px-32 pt-8 sm:pt-12 lg:pt-16">
+    <!-- Loading State -->
+    <div *ngIf="isLoading" class="px-4 sm:px-8 lg:px-32 pt-8 sm:pt-12 lg:pt-16">
+        <div class="flex justify-center items-center h-64">
+            <div class="animate-spin rounded-full h-32 w-32 border-b-2 border-primaryColor"></div>
+        </div>
+    </div>
+
+    <!-- Error State -->
+    <div *ngIf="loadingError" class="px-4 sm:px-8 lg:px-32 pt-8 sm:pt-12 lg:pt-16">
+        <div class="text-center">
+            <p class="text-red-500">Failed to load content. Please try again later.</p>
+        </div>
+    </div>
+
+    <!-- Content -->
+    <div *ngIf="!isLoading && !loadingError" class="px-4 sm:px-8 lg:px-32 pt-8 sm:pt-12 lg:pt-16">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-20">
             <div>
-                <h3 class="text-black text-3xl sm:text-4xl lg:text-5xl font-customBold pb-1">Your Partner In
+                <!-- Dynamic Hero Content -->
+                <h3 class="text-black text-3xl sm:text-4xl lg:text-5xl font-customBold pb-1">
+                    {{ heroContent.main_title || 'Your Partner In' }}
                 </h3>
-                <h3 class="text-secondaryColor text-3xl sm:text-4xl lg:text-5xl font-customBold pb-1">Remote Health </h3>
-                <h2 class="text-secondaryColor text-4xl sm:text-5xl lg:text-7xl font-customBold">Monitoring</h2>
+                <h3 class="text-secondaryColor text-3xl sm:text-4xl lg:text-5xl font-customBold pb-1">
+                    {{ heroContent.sub_title || 'Remote Health' }}
+                </h3>
+                <h2 class="text-secondaryColor text-4xl sm:text-5xl lg:text-7xl font-customBold">
+                    {{ heroContent.main_text || 'Monitoring' }}
+                </h2>
 
-                <p class="text-[#3E3E3E] text-sm sm:text-base font-customRegular pt-4 lg:pe-28">Empowering healthcare providers and
-                    patients with an integrated telemedicine ecosystem—where data,
-                    devices, and care converge effortlessly.</p>
+                <p class="text-[#3E3E3E] text-sm sm:text-base font-customRegular pt-4 lg:pe-28">
+                    {{ heroContent.description || 'Empowering healthcare providers and patients with an integrated telemedicine ecosystem—where data, devices, and care converge effortlessly.' }}
+                </p>
 
                 <div class="mt-8">
-                    <button class="theme-button px-10 py-3 text-center flex items-center gap-2">Know More <img
-                            src="/icons/arrow-right.svg" class="w-3" alt=""></button>
+                    <button class="theme-button px-10 py-3 text-center flex items-center gap-2">
+                        {{ heroContent.button_text || 'Know More' }} 
+                        <img src="/icons/arrow-right.svg" class="w-3" alt="">
+                    </button>
                 </div>
             </div>
             <div class="order-first lg:order-last">
-                <img src="/images/home-img.png" class="w-full relative lg:bottom-10" alt="">
+                <img [src]="heroContent.image || '/images/home-img.png'" 
+                     class="w-full relative lg:bottom-10" 
+                     [alt]="heroContent.main_title">
             </div>
         </div>
     </div>
 
-    <div class="bg-backgroundColor px-4 sm:px-8 lg:px-32 py-12 sm:py-16 lg:py-20 mt-12 sm:mt-18 lg:mt-24">
+    <!-- Features Section -->
+    <div class="bg-backgroundColor px-4 sm:px-8 lg:px-32 py-12 sm:py-16 lg:py-20 mt-12 sm:mt-18 lg:mt-24" *ngIf="!isLoading">
         <div>
-            <h2 class="text-2xl sm:text-3xl font-customBold text-primaryColor capitalize text-center">Innovating Remote Healthcare,
-                <span class="text-secondaryColor">The Carebridge Way</span>
+            <h2 class="text-2xl sm:text-3xl font-customBold text-primaryColor capitalize text-center">
+                {{ featuresContent.section_title || 'Innovating Remote Healthcare,' }}
+                <span class="text-secondaryColor">{{ featuresContent.section_subtitle || 'The Carebridge Way' }}</span>
             </h2>
 
             <div class="mt-6 sm:mt-8 lg:mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-10 lg:gap-20">
                 <div class="place-content-center">
                     <div class="size-20 mx-auto rounded-full bg-[#F9F9FF]"></div>
-                    <p class="text-black font-customMedium text-center mt-5 text-lg sm:text-xl">Integrated Suite of
-                        Telehealth Ecosystem</p>
+                    <p class="text-black font-customMedium text-center mt-5 text-lg sm:text-xl">
+                        {{ featuresContent.feature1_title || 'Integrated Suite of Telehealth Ecosystem' }}
+                    </p>
                 </div>
                 <div class="place-content-center">
                     <div class="size-20 mx-auto rounded-full bg-[#F9F9FF]"></div>
-                    <p class="text-black font-customMedium text-center mt-5 text-lg sm:text-xl">Future Ready with ABHA
-                        and NHDM Compliance</p>
+                    <p class="text-black font-customMedium text-center mt-5 text-lg sm:text-xl">
+                        {{ featuresContent.feature2_title || 'Future Ready with ABHA and NDHM Compliance' }}
+                    </p>
                 </div>
                 <div class="place-content-center">
                     <div class="size-20 mx-auto rounded-full bg-[#F9F9FF]"></div>
-                    <p class="text-black font-customMedium text-center mt-5 text-lg sm:text-xl">Real-Time Monitoring
-                        & Preventive Care</p>
+                    <p class="text-black font-customMedium text-center mt-5 text-lg sm:text-xl">
+                        {{ featuresContent.feature3_title || 'Real-Time Monitoring & Preventive Care' }}
+                    </p>
                 </div>
                 <div class="place-content-center">
                     <div class="size-20 mx-auto rounded-full bg-[#F9F9FF]"></div>
-                    <p class="text-black font-customMedium text-center mt-5 text-lg sm:text-xl">Accessible Healthcare
-                        Anytime, Anywhere</p>
+                    <p class="text-black font-customMedium text-center mt-5 text-lg sm:text-xl">
+                        {{ featuresContent.feature4_title || 'Accessible Healthcare Anytime, Anywhere' }}
+                    </p>
                 </div>
             </div>
         </div>
@@ -168,21 +199,23 @@
                 </div>
             </div>
 
-            <div class="mt-12 sm:mt-16 lg:mt-20">
+            <!-- Target Audience Section -->
+            <div class="mt-12 sm:mt-16 lg:mt-20" *ngIf="!isLoading">
                 <div class="flex flex-col lg:flex-row gap-6 lg:gap-0">
                     <div class="w-full lg:w-1/4 flex flex-col">
 
                         <div class="mb-4 lg:mb-6">
-                            <h2 class="text-2xl sm:text-3xl font-customBold text-primaryColor text-center lg:text-start"> Who is it
-                                <span class="text-secondaryColor">for?</span>
+                            <h2 class="text-2xl sm:text-3xl font-customBold text-primaryColor text-center lg:text-start">
+                                {{ targetAudienceContent.section_title || 'Who is it' }}
+                                <span class="text-secondaryColor">{{ targetAudienceContent.section_subtitle || 'for?' }}</span>
                             </h2>
                         </div>
-                        <ng-container *ngFor="let tab of tabs; let i = index">
-                            <button (click)="activeTab = tab.id" class="w-full transition relative text-center lg:text-start px-4 lg:ps-10 py-3 lg:py-0"
+                        <ng-container *ngFor="let tab of targetAudienceTabs; let i = index">
+                            <button (click)="setActiveTab(tab.id)" class="w-full transition relative text-center lg:text-start px-4 lg:ps-10 py-3 lg:py-0"
                                 [ngClass]="[
           activeTab === tab.id
             ? 'text-black text-base sm:text-lg font-customBold bg-[url(/images/active-bg.png)] bg-no-repeat h-16 lg:h-26 bg-cover bg-center lg:w-[355px] rounded-lg lg:rounded-none'
-            : 'text-[#3E3E3E] text-base sm:text-lg font-customRegular hover:text-black border border-gray-200 lg:border-none rounded-lg lg:rounded-none', i !== 0 && activeTab !== tab.id && tabs[i-1].id !== activeTab ? 'mt-3 lg:mt-5' : '' ]
+            : 'text-[#3E3E3E] text-base sm:text-lg font-customRegular hover:text-black border border-gray-200 lg:border-none rounded-lg lg:rounded-none', i !== 0 && activeTab !== tab.id && targetAudienceTabs[i-1].id !== activeTab ? 'mt-3 lg:mt-5' : '' ]
         ">
                                 {{ tab.title }}
                             </button>
@@ -190,15 +223,15 @@
                     </div>
 
                     <div class="w-full lg:w-3/4 bg-[#F0F9FA] rounded-2xl p-6 sm:p-8 lg:px-16">
-                        <ng-container *ngFor="let tab of tabs">
+                        <ng-container *ngFor="let tab of targetAudienceTabs">
                             <div *ngIf="activeTab === tab.id" class="pt-6 lg:pt-10">
                                 <div class="grid grid-cols-1 lg:grid-cols-6 gap-6 lg:gap-20">
                                     <div class="col-span-1 lg:col-span-4 order-2 lg:order-1">
-                                        <img [src]="tab.img" alt="{{ tab.title }}"
+                                        <img [src]="tab.img || tab.image" [alt]="tab.title"
                                             class="rounded-xl w-full h-full object-cover" />
                                     </div>
                                     <div class="col-span-1 lg:col-span-2 place-content-center lg:place-content-end pb-0 lg:pb-5 order-1 lg:order-2">
-                                        <p class="text-[#3E3E3E] text-sm sm:text-base font-customRegular mb-3 text-center lg:text-left">{{ tab.desc }}</p>
+                                        <p class="text-[#3E3E3E] text-sm sm:text-base font-customRegular mb-3 text-center lg:text-left">{{ tab.desc || tab.description }}</p>
                                         <a href=""
                                             class="flex items-center gap-2 text-sm sm:text-base font-customSemiBold text-primaryColor justify-center lg:justify-start">Explore
                                             Platforms<img src="/icons/arrow-right-blue.svg" class="w-4" alt=""></a>
@@ -212,19 +245,19 @@
             </div>
         </div>
 
-        <div class="mt-12 sm:mt-16 lg:mt-20 py-12 sm:py-14 lg:py-16 px-4 sm:px-8 lg:px-32 bg-[#F0F9F9]">
+        <!-- Company Logos Section -->
+        <div class="mt-12 sm:mt-16 lg:mt-20 py-12 sm:py-14 lg:py-16 px-4 sm:px-8 lg:px-32 bg-[#F0F9F9]" *ngIf="!isLoading">
             <div>
-                <h2 class="text-2xl sm:text-3xl font-customBold text-primaryColor text-center">Trusted by
-                    <span class="text-secondaryColor">10,000+ companies around the world</span>
+                <h2 class="text-2xl sm:text-3xl font-customBold text-primaryColor text-center">
+                    {{ companyLogosContent.section_title || 'Trusted by' }}
+                    <span class="text-secondaryColor">{{ companyLogosContent.section_subtitle || '10,000+ companies around the world' }}</span>
                 </h2>
             </div>
             <div class="mt-6 sm:mt-8 lg:mt-10 flex flex-wrap items-center justify-center lg:justify-between gap-6 sm:gap-8 lg:gap-10">
-                <img src="/images/Google.png" class="w-20 sm:w-24 lg:w-32 opacity-40" alt="">
-                <img src="/images/facebook-gray.png" class="w-20 sm:w-24 lg:w-32 opacity-40" alt="">
-                <img src="/images/YouTube.png" class="w-20 sm:w-24 lg:w-32 opacity-40" alt="">
-                <img src="/images/Pinterest.png" class="w-20 sm:w-24 lg:w-32 opacity-40" alt="">
-                <img src="/images/Twitch.png" class="w-20 sm:w-24 lg:w-32 opacity-40" alt="">
-                <img src="/images/Webflow.png" class="w-20 sm:w-24 lg:w-32 opacity-40" alt="">
+                <img *ngFor="let logo of companyLogos" 
+                     [src]="logo.logoImage" 
+                     [alt]="logo.companyName"
+                     class="w-20 sm:w-24 lg:w-32 opacity-40">
             </div>
         </div>
 

@@ -1,54 +1,67 @@
 <section class="pb-10">
     <div class="absolute top-0 end-0 w-full z-[-1]">
-        <img src="/images/top-bg.png" class="w-[70%] absolute top-0 end-0" alt="">
+        <img src="/images/top-bg.png" class="w-[70%] absolute top-0 end-0" alt="Background">
     </div>
     <div class="px-4 sm:px-8 lg:px-32 pt-8 sm:pt-12 lg:pt-16">
         <div>
-            <h2 class="text-2xl sm:text-3xl font-customBold text-primaryColor capitalize text-center">Latest <span
-                    class="text-secondaryColor">News & Updates</span></h2>
-            <p class="mt-3 text-sm sm:text-base font-customRegular text-[#3E3E3E] text-center w-full sm:w-[80%] lg:w-[50%] mx-auto px-4 sm:px-0">Lorem ipsum dolor
-                sit amet consectetur adipiscing elit semper dalar elementum tempus hac tellus libero
-                accumsan. </p>
+            <h2 class="text-2xl sm:text-3xl font-customBold text-primaryColor capitalize text-center">{{newsHeading}} <span
+                    class="text-secondaryColor">{{newsHeadingHighlight}}</span></h2>
+            <p
+                class="mt-3 text-sm sm:text-base font-customRegular text-[#3E3E3E] text-center w-full sm:w-[80%] lg:w-[50%] mx-auto px-4 sm:px-0">
+                {{newsDescription}}</p>
         </div>
+
+        <!-- Featured Article -->
         <div class="mt-12 sm:mt-18 lg:mt-24 bg-white border rounded-2xl border-[#98D7C6] overflow-hidden">
             <div class="grid grid-cols-1 lg:grid-cols-2">
                 <div class="relative order-1 lg:order-1">
-                    <img src="/images/news-img.svg" class="w-full h-full" alt="">
+                    <img [src]="featuredArticle.imageUrl" class="w-full h-full" [alt]="featuredArticle.title">
                     <div class="absolute top-0 start-0 w-full h-full bg-[#00000099] z-10"></div>
-                    <img src="/icons/play.svg" class="size-16 sm:size-20 lg:size-24 absolute inset-0 m-auto cursor-pointer z-20" alt="">
+                    <img *ngIf="featuredArticle.videoUrl" src="/icons/play.svg"
+                        class="size-16 sm:size-20 lg:size-24 absolute inset-0 m-auto cursor-pointer z-20"
+                        alt="Play video">
                 </div>
-                <div class="p-8 sm:p-12 lg:p-20 place-content-center text-center lg:text-start grid gap-6 sm:gap-8 lg:gap-10 order-2 lg:order-2">
-                    <img src="/images/Facebook.png" class="w-32 sm:w-40 lg:w-44 mx-auto lg:mx-0" alt="">
-                    <p class="text-[#3E3E3E] text-sm sm:text-base font-customRegular">"Lorem ipsum dolor sit amet conse ctetur
-                        adipiscing elit Vel mauris turpis vel eget nec orci nec ipsum Elementum felis eu pellentesque
-                        velit vulputate. Blandit consequat facilisi sagittis ut quis Integer et faucibus elemen."</p>
+                <div
+                    class="p-8 sm:p-12 lg:p-20 place-content-center text-center lg:text-start grid gap-6 sm:gap-8 lg:gap-10 order-2 lg:order-2">
+                    <img *ngIf="featuredArticle.companyLogoUrl" [src]="featuredArticle.companyLogoUrl"
+                        class="w-32 sm:w-40 lg:w-44 mx-auto lg:mx-0" [alt]="featuredArticle.authorCompany + ' logo'">
+                    <p class="text-[#3E3E3E] text-sm sm:text-base font-customRegular">"{{featuredArticle.content}}"</p>
                     <div>
-                        <h3 class="font-customBold text-base sm:text-lg text-black pb-2 sm:pb-3">John Carter</h3>
-                        <p class="text-[#3E3E3E] text-xs sm:text-sm font-customRegular">Creative Director at Facebook</p>
+                        <h3 class="font-customBold text-base sm:text-lg text-black pb-2 sm:pb-3">
+                            {{featuredArticle.author}}</h3>
+                        <p class="text-[#3E3E3E] text-xs sm:text-sm font-customRegular">
+                            {{featuredArticle.authorPosition}} at {{featuredArticle.authorCompany}}</p>
                     </div>
                 </div>
             </div>
         </div>
 
         <div class="mt-12 sm:mt-18 lg:mt-24">
-            <h2 class="text-2xl sm:text-3xl font-customBold text-primaryColor capitalize text-center">Follow us on <span
-                    class="text-secondaryColor">Linkedin</span></h2>
-            <p class="mt-3 text-sm sm:text-base font-customRegular text-[#3E3E3E] text-center w-full sm:w-[80%] lg:w-[50%] mx-auto px-4 sm:px-0">Lorem ipsum
-                dolor sit amet consectetur adipiscing elit semper dalar elementum tempus hac tellus libero
-                accumsan. </p>
+            <h2 class="text-2xl sm:text-3xl font-customBold text-primaryColor capitalize text-center">{{linkedinHeading}} <span
+                    class="text-secondaryColor">{{linkedinHeadingHighlight}}</span></h2>
+            <p
+                class="mt-3 text-sm sm:text-base font-customRegular text-[#3E3E3E] text-center w-full sm:w-[80%] lg:w-[50%] mx-auto px-4 sm:px-0">
+                {{linkedinDescription}}</p>
         </div>
     </div>
 
     <div class="mt-8 sm:mt-10 lg:mt-14">
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-1 lg:gap-0">
-            <img src="/images/img-1.png" class="w-full h-full" alt="">
-            <img src="/images/img-2.png" class="w-full h-full" alt="">
-            <img src="/images/img-3.png" class="w-full h-full" alt="">
-            <img src="/images/img-4.png" class="w-full h-full" alt="">
+            <div *ngFor="let article of newsArticles" class="relative group overflow-hidden">
+                <img [src]="article.imageUrl"
+                    class="w-full h-full transition-transform duration-500 group-hover:scale-110" [alt]="article.title">
+                <div
+                    class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4">
+                    <h3 class="text-white font-customBold text-lg">{{article.title}}</h3>
+                    <p class="text-white/80 text-sm mt-1">{{article.summary}}</p>
+                </div>
+            </div>
         </div>
 
         <div class="text-center mt-6 sm:mt-8 lg:mt-10 px-4">
-             <button class="theme-button px-8 sm:px-10 py-3 text-center">Follow us</button>
+            <a [href]="socialMediaLink" target="_blank">
+                <button class="theme-button px-8 sm:px-10 py-3 text-center">{{followButtonText}}</button>
+            </a>
         </div>
     </div>
 </section>

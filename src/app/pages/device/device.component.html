@@ -2,32 +2,43 @@
     <div class="absolute top-0 end-0 w-full z-[-1]">
         <img src="/images/top-bg.png" class="w-[75%] absolute top-0 end-0" alt="">
     </div>
-    <div class="px-4 sm:px-8 lg:px-32 pt-6 sm:pt-8 lg:pt-10 pb-12 sm:pb-16 lg:pb-20">
+    <!-- Loading State -->
+    <div *ngIf="isLoading" class="px-4 sm:px-8 lg:px-32 pt-6 sm:pt-8 lg:pt-10">
+        <div class="flex justify-center items-center h-64">
+            <div class="animate-spin rounded-full h-32 w-32 border-b-2 border-primaryColor"></div>
+        </div>
+    </div>
+
+    <!-- Content -->
+    <div *ngIf="!isLoading" class="px-4 sm:px-8 lg:px-32 pt-6 sm:pt-8 lg:pt-10 pb-12 sm:pb-16 lg:pb-20">
+        <!-- Dynamic Category Tabs -->
         <div class="flex flex-wrap items-center gap-3 sm:gap-4 lg:gap-5 justify-center sm:justify-start">
             <div class="border rounded-full px-4 sm:px-5 lg:px-6 pt-2 pb-2.5 cursor-pointer text-sm sm:text-base font-customRegular"
-                [ngClass]="activeTab === 'Devices' ? 'bg-primaryColor text-white border-primaryColor' : 'border-primaryColor text-primaryColor bg-white'"
-                (click)="setActive('Devices')">
-                Devices
+                [ngClass]="activeTab === 'devices' ? 'bg-primaryColor text-white border-primaryColor' : 'border-primaryColor text-primaryColor bg-white'"
+                (click)="setActive('devices')">
+                {{ categoriesContent.devices_label || 'Devices' }}
             </div>
             <div class="border rounded-full px-4 sm:px-5 lg:px-6 pt-2 pb-2.5 cursor-pointer text-sm sm:text-base font-customRegular"
-                [ngClass]="activeTab === 'Kiosks' ? 'bg-primaryColor text-white border-primaryColor' : 'border-primaryColor text-primaryColor bg-white'"
-                (click)="setActive('Kiosks')">
-                Kiosks
+                [ngClass]="activeTab === 'kiosks' ? 'bg-primaryColor text-white border-primaryColor' : 'border-primaryColor text-primaryColor bg-white'"
+                (click)="setActive('kiosks')">
+                {{ categoriesContent.kiosks_label || 'Kiosks' }}
             </div>
             <div class="border rounded-full px-4 sm:px-5 lg:px-6 pt-2 pb-2.5 cursor-pointer text-sm sm:text-base font-customRegular"
-                [ngClass]="activeTab === 'Kits' ? 'bg-primaryColor text-white border-primaryColor' : 'border-primaryColor text-primaryColor bg-white'"
-                (click)="setActive('Kits')">
-                Kits
+                [ngClass]="activeTab === 'kits' ? 'bg-primaryColor text-white border-primaryColor' : 'border-primaryColor text-primaryColor bg-white'"
+                (click)="setActive('kits')">
+                {{ categoriesContent.kits_label || 'Kits' }}
             </div>
         </div>
 
+        <!-- Products Display -->
         <div class="mt-6 sm:mt-8 lg:mt-10 grid gap-8 sm:gap-12 lg:gap-16">
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-20">
+            <div *ngFor="let product of getProductsForCategory(activeTab); trackBy: trackByProductId" class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-20">
                 <div>
                     <div class="relative">
                         <swiper class="thumbSlide" [config]="carouselConfig">
-                            <ng-template swiperSlide class="!h-[500px]"> <img src="/images/ImagePlaceholder.png" class="w-full rounded-xl"
-                                    alt=""> </ng-template>
+                            <ng-template swiperSlide class="!h-[500px]" *ngFor="let image of product.galleryImages || [product.mainImage]">
+                                <img [src]="image" class="w-full rounded-xl" [alt]="product.productName">
+                            </ng-template>
                             <ng-template swiperSlide> <img src="/images/ImagePlaceholder.png" class="w-full rounded-xl"
                                     alt=""> </ng-template>
                             <ng-template swiperSlide> <img src="/images/ImagePlaceholder.png" class="w-full rounded-xl"
@@ -50,107 +61,27 @@
 
                 </div>
                 <div class="">
-                    <h2 class="text-black text-3xl font-customBold mb-5">MR 300</h2>
+                    <h2 class="text-black text-3xl font-customBold mb-5">{{ product.productName }}</h2>
                     <ul class="ms-5 grid gap-2">
-                        <li class="list-disc text-sm sm:text-base font-customRegular text-[#00000099]">5” Color TFT display</li>
-                        <li class="list-disc text-sm sm:text-base font-customRegular text-[#00000099]">12 Leads simultaneous ECG acquisition</li>
-                        <li class="list-disc text-sm sm:text-base font-customRegular text-[#00000099]">3 Channel ECG Recording</li>
-                        <li class="list-disc text-sm sm:text-base font-customRegular text-[#00000099]">Interpretation Facility</li>
-                        <li class="list-disc text-sm sm:text-base font-customRegular text-[#00000099]">Memory storage for 5 patients</li>
-                        <li class="list-disc text-sm sm:text-base font-customRegular text-[#00000099]">Auto & Manual mode of operation</li>
-                        <li class="list-disc text-sm sm:text-base font-customRegular text-[#00000099]">PDF convertor to transfer ECG from device to USB</li>
-                        <li class="list-disc text-sm sm:text-base font-customRegular text-[#00000099]">Display of 12 Lead ECG waveform</li>
-                        <li class="list-disc text-sm sm:text-base font-customRegular text-[#00000099]">ECG lead annotation facility</li>
+                        <li *ngFor="let spec of product.specifications" 
+                            class="list-disc text-sm sm:text-base font-customRegular text-[#00000099]">
+                            {{ spec }}
+                        </li>
                     </ul>
-                    <button type="button" class="border mt-8 border-[#009EE0] px-8 py-2.5 text-[#009EE0] font-customRegular text-sm rounded-full">Download Brochure</button>
+                    <button *ngIf="product.brochureUrl" 
+                            type="button" 
+                            (click)="downloadBrochure(product.brochureUrl)"
+                            class="border mt-8 border-[#009EE0] px-8 py-2.5 text-[#009EE0] font-customRegular text-sm rounded-full hover:bg-[#009EE0] hover:text-white transition-colors">
+                        Download Brochure
+                    </button>
                 </div>
             </div>
 
-             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-20">
-                <div>
-                    <div class="relative">
-                        <swiper class="thumbSlide" [config]="carouselConfig1">
-                            <ng-template swiperSlide class="!h-[500px]"> <img src="/images/ImagePlaceholder.png" class="w-full rounded-xl"
-                                    alt=""> </ng-template>
-                            <ng-template swiperSlide> <img src="/images/ImagePlaceholder.png" class="w-full rounded-xl"
-                                    alt=""> </ng-template>
-                            <ng-template swiperSlide> <img src="/images/ImagePlaceholder.png" class="w-full rounded-xl"
-                                    alt=""> </ng-template>
-                            <ng-template swiperSlide> <img src="/images/ImagePlaceholder.png" class="w-full rounded-xl"
-                                    alt=""> </ng-template>
-                            <ng-template swiperSlide> <img src="/images/ImagePlaceholder.png" class="w-full rounded-xl"
-                                    alt=""> </ng-template>
-                            <ng-template swiperSlide> <img src="/images/ImagePlaceholder.png" class="w-full rounded-xl"
-                                    alt=""> </ng-template>
-                        </swiper>
-
-                        <div class="swiper-button-prev swiper-prev1 after:content-[''] !w-10">
-                            <img src="/icons/arrow-button-left.svg" alt="" class="w-full">
-                        </div>
-                        <div class="swiper-button-next swiper-next1 after:content-[''] !w-10">
-                            <img src="/icons/arrow-button-right.svg" alt="" class="w-full">
-                        </div>
-                    </div>
-
-                </div>
-                <div class="">
-                    <h2 class="text-black text-3xl font-customBold mb-5">MR 300</h2>
-                    <ul class="ms-5 grid gap-2">
-                        <li class="list-disc text-sm sm:text-base font-customRegular text-[#00000099]">5” Color TFT display</li>
-                        <li class="list-disc text-sm sm:text-base font-customRegular text-[#00000099]">12 Leads simultaneous ECG acquisition</li>
-                        <li class="list-disc text-sm sm:text-base font-customRegular text-[#00000099]">3 Channel ECG Recording</li>
-                        <li class="list-disc text-sm sm:text-base font-customRegular text-[#00000099]">Interpretation Facility</li>
-                        <li class="list-disc text-sm sm:text-base font-customRegular text-[#00000099]">Memory storage for 5 patients</li>
-                        <li class="list-disc text-sm sm:text-base font-customRegular text-[#00000099]">Auto & Manual mode of operation</li>
-                        <li class="list-disc text-sm sm:text-base font-customRegular text-[#00000099]">PDF convertor to transfer ECG from device to USB</li>
-                        <li class="list-disc text-sm sm:text-base font-customRegular text-[#00000099]">Display of 12 Lead ECG waveform</li>
-                        <li class="list-disc text-sm sm:text-base font-customRegular text-[#00000099]">ECG lead annotation facility</li>
-                    </ul>
-                    <button type="button" class="border mt-8 border-[#009EE0] px-8 py-2.5 text-[#009EE0] font-customRegular text-sm rounded-full">Download Brochure</button>
-                </div>
-            </div>
-
-             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-20">
-                <div>
-                    <div class="relative">
-                        <swiper class="thumbSlide" [config]="carouselConfig2">
-                            <ng-template swiperSlide class="!h-[500px]"> <img src="/images/ImagePlaceholder.png" class="w-full rounded-xl"
-                                    alt=""> </ng-template>
-                            <ng-template swiperSlide> <img src="/images/ImagePlaceholder.png" class="w-full rounded-xl"
-                                    alt=""> </ng-template>
-                            <ng-template swiperSlide> <img src="/images/ImagePlaceholder.png" class="w-full rounded-xl"
-                                    alt=""> </ng-template>
-                            <ng-template swiperSlide> <img src="/images/ImagePlaceholder.png" class="w-full rounded-xl"
-                                    alt=""> </ng-template>
-                            <ng-template swiperSlide> <img src="/images/ImagePlaceholder.png" class="w-full rounded-xl"
-                                    alt=""> </ng-template>
-                            <ng-template swiperSlide> <img src="/images/ImagePlaceholder.png" class="w-full rounded-xl"
-                                    alt=""> </ng-template>
-                        </swiper>
-
-                        <div class="swiper-button-prev swiper-prev2 after:content-[''] !w-10">
-                            <img src="/icons/arrow-button-left.svg" alt="" class="w-full">
-                        </div>
-                        <div class="swiper-button-next swiper-next2 after:content-[''] !w-10">
-                            <img src="/icons/arrow-button-right.svg" alt="" class="w-full">
-                        </div>
-                    </div>
-
-                </div>
-                <div class="">
-                    <h2 class="text-black text-3xl font-customBold mb-5">MR 300</h2>
-                    <ul class="ms-5 grid gap-2">
-                        <li class="list-disc text-sm sm:text-base font-customRegular text-[#00000099]">5” Color TFT display</li>
-                        <li class="list-disc text-sm sm:text-base font-customRegular text-[#00000099]">12 Leads simultaneous ECG acquisition</li>
-                        <li class="list-disc text-sm sm:text-base font-customRegular text-[#00000099]">3 Channel ECG Recording</li>
-                        <li class="list-disc text-sm sm:text-base font-customRegular text-[#00000099]">Interpretation Facility</li>
-                        <li class="list-disc text-sm sm:text-base font-customRegular text-[#00000099]">Memory storage for 5 patients</li>
-                        <li class="list-disc text-sm sm:text-base font-customRegular text-[#00000099]">Auto & Manual mode of operation</li>
-                        <li class="list-disc text-sm sm:text-base font-customRegular text-[#00000099]">PDF convertor to transfer ECG from device to USB</li>
-                        <li class="list-disc text-sm sm:text-base font-customRegular text-[#00000099]">Display of 12 Lead ECG waveform</li>
-                        <li class="list-disc text-sm sm:text-base font-customRegular text-[#00000099]">ECG lead annotation facility</li>
-                    </ul>
-                    <button type="button" class="border mt-8 border-[#009EE0] px-8 py-2.5 text-[#009EE0] font-customRegular text-sm rounded-full">Download Brochure</button>
+            <!-- Empty State -->
+            <div *ngIf="getProductsForCategory(activeTab).length === 0" class="text-center py-12">
+                <div class="text-gray-500 text-lg">
+                    <p class="mb-2">No {{ activeTab }} available at the moment.</p>
+                    <p class="text-sm">Please check back later for updates.</p>
                 </div>
             </div>
         </div>
