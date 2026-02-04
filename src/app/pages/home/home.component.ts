@@ -2,10 +2,12 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ContentService } from '../../services/content.service';
 
+import { RouterModule } from '@angular/router';
+
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterModule],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
@@ -24,6 +26,9 @@ export class HomeComponent implements OnInit {
   // Dynamic data arrays
   companyLogos: any[] = [];
   targetAudienceTabs: any[] = [];
+  challengesList: any[] = [];
+  ecosystemList: any[] = [];
+  testimonialsList: any[] = [];
   
   // Static functionality properties
   activeTab: string = 'clinics';
@@ -39,10 +44,14 @@ export class HomeComponent implements OnInit {
   }
 
   loadAllContent() {
-    // Load page content
-    this.contentService.getPageContent('home').subscribe({
-      next: (data) => {
-        this.mapContentToProperties(data.content);
+    // Load page content from specific sync endpoint
+    this.contentService.getHomePageContent().subscribe({
+      next: (response) => {
+        if (response && response.data) {
+             this.mapContentToProperties(response.data);
+        } else if (response && response.content) {
+             this.mapContentToProperties(response.content);
+        }
         this.isLoading = false;
       },
       error: (error) => {
@@ -68,27 +77,79 @@ export class HomeComponent implements OnInit {
   mapContentToProperties(content: any) {
     this.heroContent = content.hero || {};
     this.featuresContent = content.features || {};
-    this.challengesContent = content.challenges || {};
-    this.ecosystemContent = content.ecosystem || {};
-    this.targetAudienceContent = content.target_audience || {};
-    this.testimonialsContent = content.testimonials || {};
-    this.companyLogosContent = content.company_logos || {};
-    this.ctaContent = content.cta || {};
+    
+    // Challenges: Map camelCase to snake_case equivalent or usages in template
+    const chall = content.challenges || {};
+    this.challengesContent = {
+        section_title: chall.sectionTitle || 'Remote Healthcare',
+        section_subtitle: chall.sectionHighlight || 'Challenges',
+        section_description: chall.description
+    };
+    this.challengesList = chall.items || [];
 
-    // Parse target audience tabs if they exist as JSON
+    // Ecosystem
+    const eco = content.ecosystem || {};
+    this.ecosystemContent = {
+        section_title: eco.sectionTitle || 'End-to-End',
+        section_subtitle: eco.sectionHighlight || 'Telemedicine Ecosystem',
+        section_description: eco.description
+    };
+    this.ecosystemList = eco.items || [];
+
+    // Target Audience
+    this.targetAudienceContent = content.target_audience || {};
+    
+    // Testimonials
+    const test = content.testimonials || {}; // JSON says null currently
+    this.testimonialsContent = {
+        section_title: 'What our', // Fallback
+        section_subtitle: 'Clients say'
+    };
+    this.testimonialsList = []; // JSON is null
+
+    // Company Logos
+    const logos = content.company_logos || {};
+    this.companyLogosContent = {
+        section_title: logos.section_title,
+        section_subtitle: logos.section_subtitle
+    };
+    this.companyLogos = logos.logos || [];
+
+    // CTA
+    const cta = content.cta || {};
+    this.ctaContent = {
+        title: cta.title,
+        button_text: cta.buttonText, // Map camelCase
+        image: this.normalizeImageUrl(cta.image),
+        link: cta.buttonLink
+    };
+
+    // Parse target audience tabs
     if (this.targetAudienceContent.tabs) {
-      try {
-        this.targetAudienceTabs = JSON.parse(this.targetAudienceContent.tabs);
-        if (this.targetAudienceTabs.length > 0) {
+       // The API returns distinct objects in 'tabs' array directly
+       if (Array.isArray(this.targetAudienceContent.tabs)) {
+           this.targetAudienceTabs = this.targetAudienceContent.tabs;
+       } else {
+           // If somehow stringified
+           try {
+              this.targetAudienceTabs = JSON.parse(this.targetAudienceContent.tabs);
+           } catch(e) { this.setDefaultTabs(); }
+       }
+       
+       if (this.targetAudienceTabs.length > 0) {
           this.activeTab = this.targetAudienceTabs[0].id;
-        }
-      } catch (e) {
-        console.error('Error parsing target audience tabs:', e);
-        this.setDefaultTabs();
-      }
+       }
     } else {
       this.setDefaultTabs();
     }
+  }
+
+
+
+  // Helper now used from ContentService directly where needed, 
+  // or via this wrapper if we want to keep calling syntax same
+  private normalizeImageUrl(url: any): string {
+    return this.contentService.normalizeImageUrl(url);
   }
 
   setDefaultTabs() {
@@ -145,6 +206,50 @@ export class HomeComponent implements OnInit {
       feature3_title: 'Real-Time Monitoring & Preventive Care',
       feature4_title: 'Accessible Healthcare Anytime, Anywhere'
     };
+
+    this.challengesContent = {
+        section_title: 'Remote Healthcare',
+        section_subtitle: 'Challenges',
+        section_description: 'Lorem ipsum dolor sit amet consectetur adipiscing elit semper dalar elementum tempus hac tellus libero accumsan.'
+    };
+    
+    // Add default lists if API doesn't provide them yet
+    this.challengesList = [
+        { id: '01', title: 'Access Gaps', description: 'Millions of patients struggle to access specialist care due to geographical barriers, and limited availability of healthcare professionals in rural areas' },
+        { id: '02', title: 'Resource Strain', description: 'Healthcare facilities are overwhelmed with inefficient scheduling systems, and staff shortages, leading to burnout and compromised patient care quality' },
+        { id: '03', title: 'Data Silos', description: 'Patient information remains fragmented across multiple systems, creating incomplete medical histories, duplicate tests, and delayed treatment' }
+    ];
+
+    this.ecosystemContent = {
+        section_title: 'End-to-End',
+        section_subtitle: 'Telemedicine Ecosystem',
+        section_description: 'From connected monitoring devices to a secure patient-data platform and on-demand clinical support, Carebridge Technologies delivers everything you need to scale remote care—seamlessly'
+    };
+
+    this.ecosystemList = [
+         { title: 'Platforms', description: 'Lorem ipsum dolor sit amet consecte tur adipiscing elit semper dalaracc lacus vel facilisis.', image: '/images/desktop-mockup.svg', link: '#' },
+         { title: 'Devices', description: 'Lorem ipsum dolor sit amet consecte tur adipiscing elit semper.', image: '/images/bundle.svg', link: '#' },
+         { title: 'Services', description: 'Lorem ipsum dolor sit amet consecte tur adipiscing elit semper.', image: '/images/mobile-mockup.svg', link: '#' }
+    ];
+
+    this.testimonialsContent = {
+        section_title: 'What our',
+        section_subtitle: 'Clients say',
+        section_description: 'Lorem ipsum dolor sit amet consectetur adipiscing elit semper dalar elementum tempus hac tellus libero accumsan.'
+    };
+
+    this.testimonialsList = [
+        { quote: 'An amazing service', text: 'Lorem ipsum dolor sit amet consecte adipiscing elit amet hendrerit pretium nulla sed enim iaculis mi.', author: 'John Carter', position: 'Designer at BRIX Templates', image: '/images/profile.svg' },
+        { quote: 'One of a kind service', text: 'Ultrices eros in cursus turpis massa tincidunt sem nulla pharetra diam sit amet nisl suscipit adipis.', author: 'Sophie Moore', position: 'Head of Design at BRIX Templates', image: '/images/profile.svg' },
+        { quote: 'The best service', text: 'Convallis posuere morbi leo urna molestie at elementum eu facilisis sapien pellentesque habitant.', author: 'Andy Smith', position: 'Developer at BRIX Templates', image: '/images/profile.svg' }
+    ];
+
+    this.ctaContent = {
+        title: 'Create your account today and get started for free!',
+        button_text: 'Get in Touch',
+        image: '/images/home-image.svg'
+    };
+
 
     this.companyLogosContent = {
       section_title: 'Trusted by',

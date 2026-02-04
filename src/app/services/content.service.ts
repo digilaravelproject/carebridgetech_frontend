@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, BehaviorSubject, of } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import { NewsPageContent } from '../pages/news/news.component';
+import { environment } from '../../environments/environment';
 
 export interface ContentSection {
   [key: string]: any;
@@ -17,7 +18,7 @@ export interface PageContent {
   providedIn: 'root'
 })
 export class ContentService {
-  private apiUrl = 'http://localhost:5001/api';
+  private apiUrl = environment.apiUrl;
   private contentCache = new Map<string, any>();
 
   constructor(private http: HttpClient) {}
@@ -113,10 +114,11 @@ export class ContentService {
   }
 
   // Get platforms
+  // Get platforms (Deprecated: use getAllProductDetailsData)
   getPlatforms(): Observable<any[]> {
-    return this.http.get<{platforms: any[]}>(`${this.apiUrl}/platforms`).pipe(
-      map(response => response.platforms)
-    );
+     return this.http.get<any>(`${this.apiUrl}/product-details`).pipe(
+       map(response => response.data.platforms)
+     );
   }
 
   // Get single platform
@@ -160,13 +162,39 @@ export class ContentService {
     );
   }
 
+  // Get home page content from the sync endpoint
+  getHomePageContent(): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/pages/home`).pipe(
+      map(response => {
+        return response; // Returns { success: true, data: { ... } }
+      }),
+      catchError(error => {
+        console.error('Error loading home page content:', error);
+        throw error;
+      })
+    );
+  }
+
+  // Get about page content from the sync endpoint
+  getAboutPageContent(): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/pages/about`).pipe(
+      map(response => {
+        return response; // Returns { success: true, data: { ... } }
+      }),
+      catchError(error => {
+        console.error('Error loading about page content:', error);
+        throw error;
+      })
+    );
+  }
+
   // Product-details API methods
   getProductDetailsPlatforms(): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/product-details/platforms`);
   }
 
   getProductDetailsPlatform(platformKey: string): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/product-details/platform/${platformKey}`);
+    return this.http.get<any>(`${this.apiUrl}/product-details/${platformKey}`);
   }
 
   getProductDetailsAchievements(): Observable<any> {
@@ -186,11 +214,47 @@ export class ContentService {
   }
 
   getAllProductDetailsData(): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/product-details/all`);
+    return this.http.get<any>(`${this.apiUrl}/product-details`);
   }
 
   // Clear cache
   clearCache(): void {
     this.contentCache.clear();
+  }
+  // Helper to clean up image URLs (Global Utility)
+  normalizeImageUrl(url: any): string {
+    if (!url) return '';
+    
+    // 1. Handle Array input
+    if (Array.isArray(url)) {
+        if (url.length > 0) {
+            return this.normalizeImageUrl(url[0]);
+        }
+        return '';
+    }
+
+    // 2. Process string
+    let cleanUrl = String(url);
+    
+    // 3. Keep 'http' part only (Aggressive fix for dirty strings)
+    const httpIndex = cleanUrl.indexOf('http');
+    if (httpIndex !== -1) {
+        cleanUrl = cleanUrl.substring(httpIndex);
+    }
+    
+    // 4. Remove garbage quotes or escaped characters
+    cleanUrl = cleanUrl.replace(/&quot;/g, '')
+                       .replace(/\\"/g, '"') 
+                       .replace(/"/g, '')
+                       .trim();
+
+    // 5. Replace 'api.localhost' with 'localhost' (Environment Specific Fix)
+    // This allows it to work in local environment where api.localhost might not resolve
+    // In production, the API should return valid URLs, but this check is safe
+    if (cleanUrl.includes('api.localhost')) {
+        cleanUrl = cleanUrl.replace('api.localhost', 'localhost');
+    }
+
+    return cleanUrl;
   }
 }

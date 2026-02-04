@@ -43,9 +43,10 @@ export class ContactComponent implements OnInit {
 
   loadPageContent() {
     this.contentService.getPageContent('contact').subscribe({
-      next: (data) => {
-        this.headerContent = data.content['header'] || {};
-        this.contactDetailsContent = data.content['contact_details'] || {};
+      next: (response: any) => {
+        // Handle potentially different response structures
+        const data = response.data || response.content || response;
+        this.mapContentToProperties(data);
         this.isLoading = false;
       },
       error: (error) => {
@@ -54,6 +55,33 @@ export class ContactComponent implements OnInit {
         this.setFallbackContent();
       }
     });
+  }
+
+  mapContentToProperties(content: any) {
+    // 1. Header
+    const header = content.header || {};
+    this.headerContent = {
+        title: header.title,
+        subtitle: header.subtitle,
+        description: header.description
+    };
+
+    // 2. Contact Details
+    // API might return 'contact' or 'contact_details'
+    const contact = content.contact || content.contact_details || {};
+    
+    this.contactDetailsContent = {
+        section_title: contact.section_title || contact.title || 'Contact details',
+        
+        location_label: contact.location_label || contact.address_label || 'Our location',
+        location_value: contact.location_value || contact.address || contact.location,
+        
+        phone_label: contact.phone_label || 'Call us',
+        phone_value: contact.phone_value || contact.phone,
+        
+        email_label: contact.email_label || 'Email us',
+        email_value: contact.email_value || contact.email
+    };
   }
 
   setFallbackContent() {
@@ -97,17 +125,17 @@ export class ContactComponent implements OnInit {
   }
 
   getFormattedLocation(): string {
-    const location = this.contactDetailsContent.location_value || '58 Middle Point Rd\nSan Francisco, 94124';
-    return location.replace(/\n/g, '<br>');
+    const location = this.contactDetailsContent.location_value || '';
+    return location.replace(/\r\n/g, '<br>').replace(/\n/g, '<br>');
   }
 
   getPhoneHref(): string {
-    const phone = this.contactDetailsContent.phone_value || '(123) 456 - 789';
-    return 'tel:' + phone.replace(/[^0-9]/g, '');
+    const phone = this.contactDetailsContent.phone_value || '';
+    return 'tel:' + phone.replace(/[^0-9+]/g, '');
   }
 
   getEmailHref(): string {
-    const email = this.contactDetailsContent.email_value || 'contact@company.com';
+    const email = this.contactDetailsContent.email_value || '';
     return 'mailto:' + email;
   }
 }

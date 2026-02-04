@@ -1,0 +1,44 @@
+Carebridge Website - API Endpoints Documentation
+
+Global Config:
+Base URL is managed via environment.ts (e.g., http://localhost:3000/api in dev).
+
+1. Home Page
+- Content: GET /api/pages/home
+  (Fetches Hero, Features, Challenges, Ecosystem, CTA, etc.)
+- Company Logos: GET /api/logos
+
+2. About Us Page
+- Page Content: GET /api/pages/about
+  (Fetches Header, Company Info, Mission, Statistics, Team Section)
+- Team Members: GET /api/team
+  (Fallback/Direct fetch for team members if not included in page content)
+- Form Submission: POST /api/forms/about
+
+3. Device / Products Page
+- Products by Category: GET /api/products/:category
+  (e.g., /api/products/monitor, /api/products/camera)
+
+4. News Page
+- Page Content: GET /api/news/pages
+  (Fetches Main Section, Featured Article, Social Section, News Articles list)
+- Content (Legacy): GET /api/news/content
+- Testimonials: GET /api/news/testimonial
+- Social Gallery: GET /api/news/social-gallery
+- All News: GET /api/news/all
+- Single Product: GET /api/news/:id
+
+5. Contact Us Page
+- Page Content: GET /api/content/contact
+  (Fetches Header, Contact Details: Address, Phone, Email)
+- Form Submission: POST /api/forms/contact
+
+6. Navigation
+- Main Menu: GET /api/navigation/main_navigation
+- All Menus: GET /api/navigation
+
+7. Product Details (General)
+- Platforms: GET /api/product-details/platforms
+- Achievements: GET /api/product-details/achievements
+- Target Audience: GET /api/product-details/target-audience
+- All Data: GET /api/product-details

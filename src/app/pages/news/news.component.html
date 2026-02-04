@@ -15,7 +15,10 @@
         <div class="mt-12 sm:mt-18 lg:mt-24 bg-white border rounded-2xl border-[#98D7C6] overflow-hidden">
             <div class="grid grid-cols-1 lg:grid-cols-2">
                 <div class="relative order-1 lg:order-1">
-                    <img [src]="featuredArticle.imageUrl" class="w-full h-full" [alt]="featuredArticle.title">
+                    <img [src]="featuredArticle.imageUrl || '/images/news-img.svg'" 
+                         class="w-full h-full object-cover" 
+                         [alt]="featuredArticle.title"
+                         onerror="this.src='/images/news-img.svg'">
                     <div class="absolute top-0 start-0 w-full h-full bg-[#00000099] z-10"></div>
                     <img *ngIf="featuredArticle.videoUrl" src="/icons/play.svg"
                         class="size-16 sm:size-20 lg:size-24 absolute inset-0 m-auto cursor-pointer z-20"
@@ -24,7 +27,8 @@
                 <div
                     class="p-8 sm:p-12 lg:p-20 place-content-center text-center lg:text-start grid gap-6 sm:gap-8 lg:gap-10 order-2 lg:order-2">
                     <img *ngIf="featuredArticle.companyLogoUrl" [src]="featuredArticle.companyLogoUrl"
-                        class="w-32 sm:w-40 lg:w-44 mx-auto lg:mx-0" [alt]="featuredArticle.authorCompany + ' logo'">
+                        class="w-32 sm:w-40 lg:w-44 mx-auto lg:mx-0 object-contain" [alt]="featuredArticle.authorCompany + ' logo'"
+                        onerror="this.style.display='none'">
                     <p class="text-[#3E3E3E] text-sm sm:text-base font-customRegular">"{{featuredArticle.content}}"</p>
                     <div>
                         <h3 class="font-customBold text-base sm:text-lg text-black pb-2 sm:pb-3">
@@ -47,13 +51,15 @@
 
     <div class="mt-8 sm:mt-10 lg:mt-14">
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-1 lg:gap-0">
-            <div *ngFor="let article of newsArticles" class="relative group overflow-hidden">
-                <img [src]="article.imageUrl"
-                    class="w-full h-full transition-transform duration-500 group-hover:scale-110" [alt]="article.title">
+            <div *ngFor="let article of newsArticles" class="relative group overflow-hidden h-64 sm:h-72 lg:h-80">
+                <img [src]="article.imageUrl || '/images/ImagePlaceholder.png'"
+                    class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" 
+                    [alt]="article.title"
+                    onerror="this.src='/images/ImagePlaceholder.png'">
                 <div
                     class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4">
                     <h3 class="text-white font-customBold text-lg">{{article.title}}</h3>
-                    <p class="text-white/80 text-sm mt-1">{{article.summary}}</p>
+                    <p class="text-white/80 text-sm mt-1 line-clamp-2">{{article.summary}}</p>
                 </div>
             </div>
         </div>

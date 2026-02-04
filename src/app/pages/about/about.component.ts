@@ -46,13 +46,18 @@ export class AboutComponent implements OnInit {
 
   ngOnInit() {
     this.loadPageContent();
-    this.loadTeamMembers();
   }
 
   loadPageContent() {
-    this.contentService.getPageContent('about').subscribe({
-      next: (data) => {
-        this.mapContentToProperties(data.content);
+    this.isLoading = true;
+    this.contentService.getAboutPageContent().subscribe({
+      next: (response) => {
+        if (response && response.data) {
+          this.mapContentToProperties(response.data);
+        } else if (response && response.content) {
+           this.mapContentToProperties(response.content);
+        }
+        
         this.isLoading = false;
       },
       error: (error) => {
@@ -64,26 +69,106 @@ export class AboutComponent implements OnInit {
   }
 
   loadTeamMembers() {
+    this.teamLoading = true;
     this.contentService.getTeamMembers().subscribe({
       next: (members) => {
-        this.teamMembers = members;
+        // Sirf tab load karein agar page content se members nahi mile
+        if (this.teamMembers.length === 0) {
+            this.teamMembers = members.map(m => ({
+                ...m,
+                profileImage: this.normalizeImageUrl(m.profileImage)
+            }));
+        }
         this.teamLoading = false;
       },
       error: (error) => {
         console.error('Error loading team members:', error);
         this.teamLoading = false;
-        this.setFallbackTeam();
+        if (this.teamMembers.length === 0) {
+            this.setFallbackTeam();
+        }
       }
     });
   }
 
   mapContentToProperties(content: any) {
-    this.headerContent = content.header || {};
-    this.companyContent = content.company || {};
-    this.missionContent = content.mission || {};
-    this.statisticsContent = content.statistics || {};
-    this.teamSectionContent = content.team || {};
-    this.contactSectionContent = content.contact || {};
+    // 1. Header Mapping
+    const header = content.header || {};
+    this.headerContent = {
+        main_title: header.title,
+        subtitle: header.subtitle
+    };
+
+    // 2. Company Mapping
+    const company = content.company || {};
+    this.companyContent = {
+        description: company.description,
+        image: this.normalizeImageUrl(company.image)
+    };
+
+    // 3. Mission Mapping
+    const mission = content.mission || {};
+    // Features array ko clean karna
+    const features = (mission.features || []).map((f: any) => ({
+        ...f,
+        icon: this.normalizeImageUrl(f.icon)
+    }));
+
+    this.missionContent = {
+        section_title: "We're here for you", 
+        section_subtitle: "no matter where you are",
+        mission_title: mission.title,
+        mission_subtitle: mission.highlight,
+        mission_description: mission.description,
+        world_map: this.normalizeImageUrl(mission.image), // JSON me mission.image hi world map hai
+        features: features
+    };
+
+    // 4. Statistics Mapping
+    const stats = content.statistics || {};
+    this.statisticsContent = {
+        section_title: stats.title,
+        section_subtitle: stats.highlight,
+        section_description: stats.description,
+        items: stats.items || []
+    };
+
+    // 5. Team Section Mapping
+    const team = content.team || {};
+    this.teamSectionContent = {
+        section_title: team.title,
+        section_subtitle: team.highlight,
+        section_description: team.description
+    };
+    
+    // Agar API response me hi members hain, to wahin se le lo
+    if (team.members && Array.isArray(team.members)) {
+        this.teamMembers = team.members.map((m: any) => ({
+            ...m,
+            profileImage: this.normalizeImageUrl(m.profileImage)
+        }));
+        this.teamLoading = false;
+    } else {
+        // Agar nahi hain, to alag se call karo
+        this.loadTeamMembers();
+    }
+
+    // 6. Contact Mapping
+    const contact = content.contact || {};
+    this.contactSectionContent = {
+        section_label: "Contact us",
+        section_title: contact.title,
+        section_subtitle: contact.highlight,
+        section_description: "Lorem ipsum dolor sit amet consectetur adipiscing elit semper dalar elementum tempus hac tellus libero accumsan.", // Description API me nahi tha, static rakha hai
+        email: contact.email,
+        phone: contact.phone,
+        address: contact.address
+    };
+  }
+
+  // --- Helper to clean up image URLs (Updated Fix) ---
+  private normalizeImageUrl(url: any): string {
+    return this.contentService.normalizeImageUrl(url);
   }
 
   setFallbackContent() {
@@ -104,32 +189,21 @@ export class AboutComponent implements OnInit {
       mission_title: "Our",
       mission_subtitle: "Mission",
       mission_description: "Build a wellness ecosystem that empowers individuals, eases the burden on healthcare systems, and catches risks before they become crises.",
-      feature1_title: "Early Detection of Disease",
-      feature1_description: "Lorem ipsum dolor sit amet consecte tur adipiscing elit semper dalar cons elementum tempus hac.",
-      feature1_icon: "/images/ImagePlaceholder.png",
-      feature2_title: "Remote Patient Management",
-      feature2_description: "Lorem ipsum dolor sit amet consecte turole adipiscing elit semper dalaracc lacus velolte facilisis volutpat est velitolm.",
-      feature2_icon: "/images/ImagePlaceholder.png",
-      feature3_title: "Community-Driven Wellness",
-      feature3_description: "Lorem ipsum dolor sit amet consecte turole adipiscing elit semper dalaracc lacus velolte facilisis volutpat est velitolm.",
-      feature3_icon: "/images/ImagePlaceholder.png"
+      features: [
+          { title: "Early Detection", description: "Lorem ipsum...", icon: "/images/ImagePlaceholder.png" },
+          { title: "Remote Patient", description: "Lorem ipsum...", icon: "/images/ImagePlaceholder.png" },
+          { title: "Community Driven", description: "Lorem ipsum...", icon: "/images/ImagePlaceholder.png" }
+      ]
     };
 
     this.statisticsContent = {
       section_title: "Our",
       section_subtitle: "Commitment",
-      stat1_number: "99",
-      stat1_symbol: "%",
-      stat1_title: "Customer satisfaction",
-      stat1_description: "Ensuring uninterrupted access for every user.",
-      stat2_number: "32",
-      stat2_symbol: "M",
-      stat2_title: "Active users",
-      stat2_description: "Powering millions of health measurements daily.",
-      stat3_number: "240",
-      stat3_symbol: "%",
-      stat3_title: "Company growth",
-      stat3_description: "Accelerating adoption across clinics and enterprises."
+      items: [
+          { number: "99", symbol: "%", title: "Satisfaction", description: "Ensuring access." },
+          { number: "32", symbol: "M", title: "Users", description: "Powering measurements." },
+          { number: "240", symbol: "%", title: "Growth", description: "Accelerating adoption." }
+      ]
     };
 
     this.teamSectionContent = {
@@ -142,7 +216,10 @@ export class AboutComponent implements OnInit {
       section_label: "Contact us",
       section_title: "Get in",
       section_subtitle: "touch today",
-      section_description: "Lorem ipsum dolor sit amet consectetur adipiscing elit semper dalar elementum tempus hac tellus libero accumsan."
+      section_description: "Lorem ipsum dolor sit amet consectetur adipiscing elit semper dalar elementum tempus hac tellus libero accumsan.",
+      email: "contact@carebridge.in",
+      phone: "+91 9860989899",
+      address: "India"
     };
   }
 

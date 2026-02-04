@@ -101,7 +101,6 @@ export class NewsComponent implements OnInit {
         this.isLoading = false;
       },
       error: (error) => {
-        console.error('Error loading news page content:', error);
         this.loadingError = true;
         this.isLoading = false;
         this.setFallbackContent();
@@ -119,7 +118,11 @@ export class NewsComponent implements OnInit {
     
     // Featured article
     if (data.featuredArticle) {
-      this.featuredArticle = data.featuredArticle;
+        this.featuredArticle = {
+            ...data.featuredArticle,
+            imageUrl: this.normalizeImageUrl(data.featuredArticle.imageUrl),
+            companyLogoUrl: this.normalizeImageUrl(data.featuredArticle.companyLogoUrl)
+        };
     }
     
     // Social section
@@ -133,8 +136,16 @@ export class NewsComponent implements OnInit {
     
     // News articles
     if (data.newsArticles && data.newsArticles.length > 0) {
-      this.newsArticles = data.newsArticles;
+      this.newsArticles = data.newsArticles.map(article => ({
+        ...article,
+        imageUrl: this.normalizeImageUrl(article.imageUrl)
+      }));
     }
+  }
+
+  // Helper to clean up image URLs
+  private normalizeImageUrl(url: any): string {
+    return this.contentService.normalizeImageUrl(url);
   }
   
   setFallbackContent(): void {
