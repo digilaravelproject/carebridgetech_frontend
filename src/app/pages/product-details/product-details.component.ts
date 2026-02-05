@@ -1,25 +1,23 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
+import { RouterModule } from '@angular/router';
 import { SwiperOptions } from 'swiper';
 import { SwiperModule, } from 'swiper/angular';
 import SwiperCore, { Pagination } from 'swiper';
-import { ContentService } from '../../services/content.service';
+import { ContentService, PlatformData } from '../../services/content.service';
 SwiperCore.use([ Pagination]);
 
 @Component({
   selector: 'app-product-details',
   standalone: true,
-  imports: [CommonModule, SwiperModule],
+  imports: [CommonModule, SwiperModule, RouterModule],
   templateUrl: './product-details.component.html',
   styleUrl: './product-details.component.scss'
 })
 export class ProductDetailsComponent implements OnInit {
 
   activeTab: string = '';
-  platforms: any[] = [];
-  deploymentOptions: any[] = [];
-  solutions: any[] = [];
-  ctaSections: any[] = [];
+  platforms: PlatformData[] = [];
   
   isLoading = true;
   loadingError = false;
@@ -33,32 +31,11 @@ export class ProductDetailsComponent implements OnInit {
   loadAllData() {
     this.contentService.getAllProductDetailsData().subscribe({
       next: (response) => {
-        if (response.success && response.data) {
-          this.deploymentOptions = response.data.deploymentOptions || [];
-          this.solutions = response.data.solutions || [];
-          this.ctaSections = response.data.ctaSections || [];
-          
-          // Map platforms and attach related data for easier use in template
-          this.platforms = (response.data.platforms || []).map((platform: any) => {
-             return {
-               ...platform,
-               key: platform.id, // Ensure key matches id
-               // Map feature to features_box expected by template
-               features_box: platform.feature ? platform.feature : null, 
-               // Attach deployment options
-               deployment_options: this.deploymentOptions.filter(d => d.applicableTabs && d.applicableTabs.includes(platform.id)),
-               // Attach solutions
-               solutions: this.solutions.filter(s => s.platformId === platform.id),
-               // Attach CTA data
-               cta_title: this.ctaSections.find(c => c.platformId === platform.id)?.title,
-               cta_description: this.ctaSections.find(c => c.platformId === platform.id)?.description,
-               cta_button: this.ctaSections.find(c => c.platformId === platform.id)?.buttonText,
-               gallery: platform.images
-             };
-          });
+        if (response.success && response.data && response.data.platforms) {
+          this.platforms = response.data.platforms;
 
           if (this.platforms.length > 0) {
-            this.activeTab = this.platforms[0].key;
+            this.activeTab = this.platforms[0].id;
           }
         }
         this.isLoading = false;
@@ -76,7 +53,7 @@ export class ProductDetailsComponent implements OnInit {
   }
 
   get activePlatform() {
-    return this.platforms.find(p => p.key === this.activeTab);
+    return this.platforms.find(p => p.id === this.activeTab);
   }
 
   carouselConfig: SwiperOptions = {

@@ -18,9 +18,9 @@
         <div class="flex flex-wrap items-center gap-3 sm:gap-4 lg:gap-5 justify-center sm:justify-start">
             <div *ngFor="let platform of platforms" 
                  class="border rounded-full px-4 sm:px-5 lg:px-6 pt-2 pb-2.5 cursor-pointer text-sm sm:text-base font-customRegular"
-                 [ngClass]="activeTab === (platform.key || platform.title) ? 'bg-primaryColor text-white border-primaryColor' : 'border-primaryColor text-primaryColor bg-white'"
-                 (click)="setActive(platform.key || platform.title)">
-                {{ platform.title || platform.name }}
+                 [ngClass]="activeTab === platform.id ? 'bg-primaryColor text-white border-primaryColor' : 'border-primaryColor text-primaryColor bg-white'"
+                 (click)="setActive(platform.id)">
+                {{ platform.name }}
             </div>
         </div>
 
@@ -31,24 +31,24 @@
                 <!-- Left Content: Description & Logos -->
                 <div>
                     <div class="mb-4 text-center lg:text-left">
-                        <img [src]="activePlatform.logo || activePlatform.image || '/images/ImagePlaceholder.png'" 
+                        <img [src]="activePlatform.logo || '/images/ImagePlaceholder.png'" 
                              class="w-[50%] sm:w-[40%] lg:w-[35%] mx-auto lg:mx-0 object-contain" 
-                             alt="{{ activePlatform.title }}">
+                             alt="{{ activePlatform.name }}">
                     </div>
                     
                     <p class="text-sm sm:text-base font-customRegular text-grayColor text-center lg:text-left">
                         {{ activePlatform.description }}
                     </p>
 
-                    <!-- Special Feature Box (e.g. ABDM for Consensus) -->
-                    <div *ngIf="activePlatform.features_box" class="border border-primaryColor rounded-2xl p-5 mt-5">
+                    <!-- Special Feature Box -->
+                    <div *ngIf="activePlatform.feature" class="border border-primaryColor rounded-2xl p-5 mt-5">
                         <div class="flex items-center w-full gap-5">
                             <div class="w-[20%] h-[120px] grid place-items-center">
-                                <img [src]="activePlatform.features_box.icon || '/images/displayNo.png'" class="object-contain" alt="">
+                                <img [src]="activePlatform.feature.icon || '/images/displayNo.png'" class="object-contain" alt="">
                             </div>
                             <div class="h-full flex flex-col justify-between w-[70%] gap-5">
-                                <h3 class="text-2xl font-customBold text-black">{{ activePlatform.features_box.title }}</h3>
-                                <p class="text-base font-customRegular text-[#00000099]">{{ activePlatform.features_box.description }}</p>
+                                <h3 class="text-2xl font-customBold text-black">{{ activePlatform.feature.title }}</h3>
+                                <p class="text-base font-customRegular text-[#00000099]">{{ activePlatform.feature.description }}</p>
                             </div>
                         </div>
                     </div>
@@ -58,8 +58,8 @@
                 <div>
                     <div class="relative">
                         <swiper class="thumbSlide" [config]="carouselConfig">
-                            <ng-container *ngIf="activePlatform.gallery && activePlatform.gallery.length > 0; else placeholderSlides">
-                                <ng-template swiperSlide *ngFor="let img of activePlatform.gallery">
+                            <ng-container *ngIf="activePlatform.images && activePlatform.images.length > 0; else placeholderSlides">
+                                <ng-template swiperSlide *ngFor="let img of activePlatform.images">
                                     <img [src]="img" class="w-full rounded-xl" alt="">
                                 </ng-template>
                             </ng-container>
@@ -75,75 +75,69 @@
         </div>
     </div>
 
-    <!-- How It Works (Static for now, likely common) -->
-    <div class="bg-backgroundColor px-4 sm:px-8 lg:px-32 py-8 sm:py-10 mt-8 sm:mt-10 lg:mt-14" *ngIf="!isLoading">
-        <h2 class="text-lg sm:text-xl font-customBold text-primaryColor uppercase text-center lg:text-left">HOW IT <span class="text-secondaryColor">WORKS</span></h2>
+    <!-- How It Works -->
+    <div class="bg-backgroundColor px-4 sm:px-8 lg:px-32 py-8 sm:py-10 mt-8 sm:mt-10 lg:mt-14" 
+         *ngIf="activePlatform?.sections?.howItWorks">
+        <h2 class="text-lg sm:text-xl font-customBold text-primaryColor uppercase text-center lg:text-left">
+            <ng-container *ngIf="activePlatform!.sections.howItWorks!.title as title">
+                <ng-container *ngIf="$any(title).main; else simpleTitle">{{ $any(title).main }} <span class="text-secondaryColor">{{ $any(title).highlight }}</span></ng-container>
+                <ng-template #simpleTitle>{{ title }}</ng-template>
+            </ng-container>
+        </h2>
+        <!-- Optional Description for How It Works -->
+        <div class="mt-4 sm:mt-5 text-center lg:text-left" *ngIf="activePlatform?.sections?.howItWorks?.description">
+            <p class="text-base font-customRegular text-grayColor">{{ activePlatform!.sections.howItWorks!.description }}</p>
+        </div>
+        
         <div class="mt-4 sm:mt-5">
-            <img src="/images/work.svg" class="w-full" alt="">
+            <img [src]="activePlatform!.sections.howItWorks!.image || '/images/work.svg'" class="w-full" alt="How it works">
         </div>
     </div>
 
-    <!-- What You Achieve (Static for now) -->
-    <div class="px-4 sm:px-8 lg:px-32 mt-8 sm:mt-10 lg:mt-14" *ngIf="!isLoading">
-        <h2 class="text-lg sm:text-xl font-customBold text-primaryColor uppercase text-center lg:text-left">WHAT YOU <span class="text-secondaryColor">achieve</span></h2>
+    <!-- What You Achieve (Achievements) -->
+    <div class="px-4 sm:px-8 lg:px-32 mt-8 sm:mt-10 lg:mt-14" *ngIf="activePlatform?.achievements && activePlatform!.achievements.length > 0">
+        <!-- Dynamic Title if available in sections.achieve.title -->
+        <h2 class="text-lg sm:text-xl font-customBold text-primaryColor uppercase text-center lg:text-left" *ngIf="activePlatform?.sections?.achieve?.title as title">
+            {{ $any(title).main }} <span class="text-secondaryColor">{{ $any(title).highlight }}</span>
+        </h2>
+         <!-- Fallback Title -->
+        <h2 class="text-lg sm:text-xl font-customBold text-primaryColor uppercase text-center lg:text-left" *ngIf="!activePlatform?.sections?.achieve?.title">
+            WHAT YOU <span class="text-secondaryColor">achieve</span>
+        </h2>
+
         <div class="mt-6 sm:mt-8 grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 lg:gap-10">
-            <!-- Iterate if data available, else static fallback -->
-            <!-- Reach Remote Communities -->
-            <div class="flex items-center gap-4 sm:gap-6">
+            <div *ngFor="let achievement of activePlatform!.achievements" class="flex items-center gap-4 sm:gap-6">
                 <div class="w-12 sm:w-16 lg:w-[12%] flex-shrink-0">
-                    <img src="/images/reach-remote.svg" class="w-full" alt="">
+                    <img [src]="achievement.icon || '/images/reach-remote.svg'" class="w-full" alt="">
                 </div>
                 <div class="grid gap-2 flex-1">
-                    <h4 class="text-lg sm:text-xl font-customBold text-black">Reach Remote Communities</h4>
-                    <p class="text-sm sm:text-base text-[#00000099] font-customRegular">Deliver quality healthcare to rural and underserved areas through teleconsultations and remote diagnostics</p>
-                </div>
-            </div>
-            <!-- Cut Travel -->
-            <div class="flex items-center gap-4 sm:gap-6">
-                <div class="w-12 sm:w-16 lg:w-[12%] flex-shrink-0">
-                    <img src="/images/cut-travel.svg" class="w-full" alt="">
-                </div>
-                <div class="grid gap-2 flex-1">
-                    <h4 class="text-lg sm:text-xl font-customBold text-black">Cut Travel & Wait Times</h4>
-                    <p class="text-sm sm:text-base text-[#00000099] font-customRegular">Connect patients with doctors instantly, eliminating long commutes and clinic queues</p>
-                </div>
-            </div>
-             <!-- Enable Expert Collaboration -->
-             <div class="flex items-center gap-4 sm:gap-6">
-                <div class="w-12 sm:w-16 lg:w-[12%] flex-shrink-0">
-                    <img src="/images/enable-expert.svg" class="w-full" alt="">
-                </div>
-                <div class="grid gap-2 flex-1">
-                    <h4 class="text-lg sm:text-xl font-customBold text-black">Enable Expert Collaboration</h4>
-                    <p class="text-sm sm:text-base text-[#00000099] font-customRegular">Bring multiple specialists together virtually for faster, better clinical decisions</p>
-                </div>
-            </div>
-            <!-- Manage Health Proactively -->
-            <div class="flex items-center gap-4 sm:gap-6">
-                <div class="w-12 sm:w-16 lg:w-[12%] flex-shrink-0">
-                    <img src="/images/manage-health.svg" class="w-full" alt="">
-                </div>
-                <div class="grid gap-2 flex-1">
-                    <h4 class="text-lg sm:text-xl font-customBold text-black">Manage Health Proactively</h4>
-                    <p class="text-sm sm:text-base text-[#00000099] font-customRegular">Support chronic disease management and preventive care with continuous remote monitoring</p>
+                    <h4 class="text-lg sm:text-xl font-customBold text-black">{{ achievement.title }}</h4>
+                    <p class="text-sm sm:text-base text-[#00000099] font-customRegular">{{ achievement.description }}</p>
                 </div>
             </div>
         </div>
+    </div>
 
-        <!-- Who Is It For -->
-        <div class="mt-12 sm:mt-16 lg:mt-20">
-            <h2 class="text-lg sm:text-xl font-customBold text-primaryColor uppercase text-center lg:text-left">who is it<span class="text-secondaryColor"> for</span></h2>
-            <div class="mt-6 sm:mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 lg:gap-10">
-                <div class="grid gap-4 place-content-baseline text-center">
-                    <div class="w-16 sm:w-20 lg:w-[20%] mx-auto">
-                        <img src="/images/ImagePlaceholder.png" class="w-full rounded-md" alt="">
-                    </div>
-                    <div class="grid gap-2 w-full lg:w-[88%] mx-auto">
-                        <h4 class="text-xl sm:text-2xl font-customBold text-black">Primary Health Centres</h4>
-                        <p class="text-base sm:text-lg text-[#00000099] font-customRegular">Lorem ipsum dolor sit amet consecte turole adipiscing elit semper dalaracc lacus velolte.</p>
-                    </div>
+    <!-- Who Is It For (Target Audience) -->
+    <div class="px-4 sm:px-8 lg:px-32 mt-12 sm:mt-16 lg:mt-20" *ngIf="activePlatform?.targetAudiences && activePlatform!.targetAudiences.length > 0">
+        <!-- Dynamic Title -->
+        <h2 class="text-lg sm:text-xl font-customBold text-primaryColor uppercase text-center lg:text-left" *ngIf="activePlatform?.sections?.targetAudience?.title as title">
+             {{ $any(title).main }} <span class="text-secondaryColor">{{ $any(title).highlight }}</span>
+        </h2>
+        <!-- Fallback Title -->
+        <h2 class="text-lg sm:text-xl font-customBold text-primaryColor uppercase text-center lg:text-left" *ngIf="!activePlatform?.sections?.targetAudience?.title">
+            who is it<span class="text-secondaryColor"> for</span>
+        </h2>
+
+        <div class="mt-6 sm:mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 lg:gap-10">
+            <div *ngFor="let audience of activePlatform!.targetAudiences" class="grid gap-4 place-content-baseline text-center">
+                <div class="w-16 sm:w-20 lg:w-[20%] mx-auto">
+                    <img [src]="audience.image || '/images/ImagePlaceholder.png'" class="w-full rounded-md" alt="">
                 </div>
-                <!-- Add more static/dynamic items as needed -->
+                <div class="grid gap-2 w-full lg:w-[88%] mx-auto">
+                    <h4 class="text-xl sm:text-2xl font-customBold text-black">{{ audience.title }}</h4>
+                    <p class="text-base sm:text-lg text-[#00000099] font-customRegular">{{ audience.description }}</p>
+                </div>
             </div>
         </div>
     </div>
@@ -151,20 +145,36 @@
     <!-- Layouts: Flexible Deployment / Key Solutions -->
     <div class="bg-backgroundColor px-4 sm:px-8 lg:px-32 py-12 sm:py-14 lg:py-16 mt-8 sm:mt-10 lg:mt-14" *ngIf="activePlatform">
         
-        <!-- Condition 1: Flexible Deployment (if deployment options exist) -->
-        <div *ngIf="activePlatform.deployment_options && activePlatform.deployment_options.length > 0">
-            <h2 class="text-2xl sm:text-3xl font-customBold text-primaryColor capitalize text-center">Flexible Deployment, <span class="text-secondaryColor">Maximum Impact</span></h2>
+        <!-- Condition 1: Flexible Deployment -->
+        <div *ngIf="activePlatform.deploymentOptions && activePlatform.deploymentOptions.length > 0">
+            <!-- Dynamic Title -->
+            <h2 class="text-2xl sm:text-3xl font-customBold text-primaryColor capitalize text-center" *ngIf="activePlatform.sections?.deployment?.title as title">
+                {{ $any(title).main }} <span class="text-secondaryColor">{{ $any(title).highlight }}</span>
+            </h2>
+             <!-- Fallback Title -->
+            <h2 class="text-2xl sm:text-3xl font-customBold text-primaryColor capitalize text-center" *ngIf="!activePlatform.sections?.deployment?.title">
+                Flexible Deployment, <span class="text-secondaryColor">Maximum Impact</span>
+            </h2>
+
             <div class="mt-6 sm:mt-8 lg:mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-10 lg:gap-20">
-                <div *ngFor="let option of activePlatform.deployment_options" class="place-content-center px-3 sm:px-4 lg:px-5">
+                <div *ngFor="let option of activePlatform.deploymentOptions" class="place-content-center px-3 sm:px-4 lg:px-5">
                     <img [src]="option.icon || '/images/bundle.svg'" class="size-24 sm:size-32 lg:size-36 mx-auto" alt="">
                     <p class="text-black font-customMedium text-center mt-4 lg:mt-5 text-lg sm:text-xl">{{ option.title }}</p>
                 </div>
             </div>
         </div>
 
-        <!-- Condition 2: Key Solutions (if solutions exist) -->
+        <!-- Condition 2: Key Solutions -->
         <div *ngIf="activePlatform.solutions && activePlatform.solutions.length > 0">
-            <h2 class="text-2xl sm:text-3xl font-customBold text-primaryColor capitalize text-center">Key <span class="text-secondaryColor">Solutions</span></h2>
+            <!-- Dynamic Title -->
+            <h2 class="text-2xl sm:text-3xl font-customBold text-primaryColor capitalize text-center" *ngIf="activePlatform.sections?.solutions?.title as title">
+                {{ $any(title).main }} <span class="text-secondaryColor">{{ $any(title).highlight }}</span>
+            </h2>
+            <!-- Fallback Title -->
+            <h2 class="text-2xl sm:text-3xl font-customBold text-primaryColor capitalize text-center" *ngIf="!activePlatform.sections?.solutions?.title">
+                Key <span class="text-secondaryColor">Solutions</span>
+            </h2>
+
             <div class="mt-6 sm:mt-8 lg:mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 lg:gap-14">
                 <div *ngFor="let sol of activePlatform.solutions" class="bg-white rounded-xl p-4 sm:p-5 border border-borderColor">
                     <img [src]="sol.image || '/images/ImagePlaceholder.png'" class="w-full mx-auto" alt="">
@@ -178,13 +188,13 @@
     </div>
 
     <!-- Call to Action Box -->
-    <div class="px-4 sm:px-8 lg:px-32 mt-8 sm:mt-10 lg:mt-14" *ngIf="activePlatform">
+    <div class="px-4 sm:px-8 lg:px-32 mt-8 sm:mt-10 lg:mt-14 pb-10" *ngIf="activePlatform?.cta">
         <div class="bg-[#005783] p-8 sm:p-12 lg:p-16 lg:px-20 rounded-2xl flex flex-col lg:flex-row items-center w-full gap-6 lg:gap-10">
             <div class="text-center lg:text-left lg:pe-24">
-                <h5 class="text-xl sm:text-2xl font-customBold text-white pb-3">{{ activePlatform.cta_title || 'Transform Your Healthcare' }}</h5>
-                <p class="text-base sm:text-lg text-white font-customRegular">{{ activePlatform.cta_description || 'Get in touch to learn more.' }}</p>
+                <h5 class="text-xl sm:text-2xl font-customBold text-white pb-3">{{ activePlatform!.cta.title || 'Transform Your Healthcare' }}</h5>
+                <p class="text-base sm:text-lg text-white font-customRegular">{{ activePlatform!.cta.description || 'Get in touch to learn more.' }}</p>
             </div>
-            <button class="theme-button w-full lg:w-1/5 py-3 flex-shrink-0">{{ activePlatform.cta_button || 'Get in Touch' }}</button>
+            <button class="theme-button w-full lg:w-1/5 py-3 flex-shrink-0" [routerLink]="activePlatform!.cta.buttonLink || '/contact-us'">{{ activePlatform!.cta.buttonText || 'Get in Touch' }}</button>
         </div>
     </div>
 

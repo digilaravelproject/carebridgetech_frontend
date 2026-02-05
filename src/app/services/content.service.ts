@@ -5,6 +5,88 @@ import { map, catchError } from 'rxjs/operators';
 import { NewsPageContent } from '../pages/news/news.component';
 import { environment } from '../../environments/environment';
 
+// Interfaces matching the provided JSON structure
+export interface SectionTitle {
+  main: string;
+  highlight?: string;
+}
+
+export interface SectionContent {
+  title: SectionTitle | string;
+  image?: string;
+  description?: string;
+}
+
+export interface PlatformSections {
+  howItWorks?: SectionContent;
+  achieve?: { title: SectionTitle };
+  targetAudience?: { title: SectionTitle };
+  deployment?: { title: SectionTitle };
+  solutions?: { title: SectionTitle };
+}
+
+export interface Achievement {
+  id: number;
+  icon: string;
+  title: string;
+  description: string;
+}
+
+export interface TargetAudience {
+  id: number;
+  image: string;
+  title: string;
+  description: string;
+}
+
+export interface DeploymentOption {
+  id: number;
+  icon: string;
+  title: string;
+}
+
+export interface PlatformFeature {
+  icon: string;
+  title: string;
+  description: string;
+}
+
+export interface PlatformCTA {
+  title: string;
+  description: string;
+  buttonText: string;
+  buttonLink: string;
+}
+
+export interface Solution {
+  id: number;
+  image: string;
+  title: string;
+  description: string;
+}
+
+export interface PlatformData {
+  id: string;
+  name: string;
+  logo: string;
+  description: string;
+  feature?: PlatformFeature;
+  images: string[];
+  solutions: Solution[];
+  cta: PlatformCTA;
+  sections: PlatformSections;
+  achievements: Achievement[];
+  targetAudiences: TargetAudience[];
+  deploymentOptions: DeploymentOption[];
+}
+
+export interface ProductDetailsResponse {
+  success: boolean;
+  data: {
+    platforms: PlatformData[];
+  };
+}
+
 export interface ContentSection {
   [key: string]: any;
 }
@@ -218,8 +300,8 @@ export class ContentService {
     return this.http.get<any>(`${this.apiUrl}/product-details/cta/${platformKey}`);
   }
 
-  getAllProductDetailsData(): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/product-details`);
+  getAllProductDetailsData(): Observable<ProductDetailsResponse> {
+    return this.http.get<ProductDetailsResponse>(`${this.apiUrl}/product-details`);
   }
 
   // Clear cache
