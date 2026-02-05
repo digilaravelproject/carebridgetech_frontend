@@ -103,44 +103,51 @@
             </div>
 
             <!-- Contact Details Section -->
-            <div class="lg:col-span-2 bg-[#005783] p-6 sm:p-8 lg:p-20 rounded-xl lg:rounded-s-xl lg:rounded-e-none grid gap-6 lg:gap-10 order-1 lg:order-2 lg:pb-60" *ngIf="!isLoading">
-                <h2 class="text-white text-2xl sm:text-3xl font-customBold text-center lg:text-left">
-                    {{ contactDetailsContent.section_title || 'Contact details' }}
-                </h2>
+            <div class="lg:col-span-2 bg-[#005783] p-6 sm:p-8 lg:p-12 rounded-xl lg:rounded-s-xl lg:rounded-e-none flex flex-col gap-6 order-1 lg:order-2 lg:pb-32 max-h-[1200px] overflow-y-auto custom-scrollbar" *ngIf="!isLoading">
                 
-                <!-- Location -->
-                <div class="grid gap-2 lg:gap-3 text-center lg:text-left">
-                    <p class="font-customRegular text-sm sm:text-base text-white uppercase">
-                        {{ contactDetailsContent.location_label || 'Our location' }}
-                    </p>
-                    <h4 class="text-white font-customBold text-base sm:text-lg" [innerHTML]="getFormattedLocation()">
-                    </h4>
+                <div *ngFor="let contact of contactDetailsList" class="grid gap-3 border-b border-white/10 pb-6 last:border-0 last:pb-0">
+                    <!-- Section Title -->
+                    <h2 class="text-[#FBB03B] text-xs tracking-wider font-customBold uppercase mb-1">
+                        {{ contact.sectionTitle }}
+                    </h2>
+                    
+                    <!-- Entity Name -->
+                    <h3 *ngIf="contact.entityName" class="text-white text-base font-customRegular mb-1">
+                        {{ contact.entityName }}
+                    </h3>
+
+                    <!-- Address -->
+                    <div class="text-white/90 font-customRegular text-sm leading-relaxed mb-1" *ngIf="contact.address">
+                        <div [innerHTML]="getFormattedAddress(contact.address)"></div>
+                    </div>
+
+                    <!-- Contact Info Block -->
+                    <div class="space-y-1">
+                        <!-- Phone -->
+                        <div class="flex gap-2 text-sm font-customRegular" *ngIf="contact.phoneNumbers">
+                            <span class="text-white/60">Phone :</span>
+                            <span class="text-white">{{ contact.phoneNumbers }}</span>
+                        </div>
+
+                        <!-- Fax -->
+                        <div class="flex gap-2 text-sm font-customRegular" *ngIf="contact.fax">
+                            <span class="text-white/60">Fax :</span>
+                            <span class="text-white">{{ contact.fax }}</span>
+                        </div>
+
+                        <!-- Email -->
+                        <div class="flex gap-2 text-sm font-customRegular" *ngIf="contact.emails">
+                            <span class="text-white/60">E-Mail :</span>
+                            <a [href]="'mailto:' + contact.emails" class="text-white hover:text-secondaryColor transition-colors">
+                                {{ contact.emails }}
+                            </a>
+                        </div>
+                    </div>
                 </div>
 
-                <!-- Phone -->
-                <div class="grid gap-2 lg:gap-3 text-center lg:text-left">
-                    <p class="font-customRegular text-sm sm:text-base text-white uppercase">
-                        {{ contactDetailsContent.phone_label || 'Call us' }}
-                    </p>
-                    <h4 class="text-white font-customBold text-base sm:text-lg">
-                        <a [href]="getPhoneHref()" 
-                           class="hover:text-secondaryColor transition-colors">
-                            {{ contactDetailsContent.phone_value || '(123) 456 - 789' }}
-                        </a>
-                    </h4>
-                </div>
-
-                <!-- Email -->
-                <div class="grid gap-2 lg:gap-3 text-center lg:text-left">
-                    <p class="font-customRegular text-sm sm:text-base text-white uppercase">
-                        {{ contactDetailsContent.email_label || 'Email us' }}
-                    </p>
-                    <h4 class="text-white font-customBold text-base sm:text-lg">
-                        <a [href]="getEmailHref()" 
-                           class="hover:text-secondaryColor transition-colors">
-                            {{ contactDetailsContent.email_value || 'contact@company.com' }}
-                        </a>
-                    </h4>
+                <!-- Fallback if list is empty -->
+                <div *ngIf="contactDetailsList.length === 0" class="text-center text-white/70">
+                    <p>No contact details available at the moment.</p>
                 </div>
             </div>
         </div>

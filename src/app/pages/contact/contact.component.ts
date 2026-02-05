@@ -13,7 +13,7 @@ import { ContentService } from '../../services/content.service';
 export class ContactComponent implements OnInit {
   // Dynamic content properties
   headerContent: any = {};
-  contactDetailsContent: any = {};
+  contactDetailsList: any[] = [];
   
   // Form handling
   contactForm: FormGroup;
@@ -42,62 +42,53 @@ export class ContactComponent implements OnInit {
   }
 
   loadPageContent() {
+    this.isLoading = true;
+    
+    // Load header content (keep existing flow or assume static/different endpoint for header)
+    // For now, we'll keep the existing getPageContent for header if it exists, 
+    // but primarily we need the contact details from the new endpoint.
+    
+    // 1. Get Header Content (Optional: from existing 'contact' page content if available)
     this.contentService.getPageContent('contact').subscribe({
       next: (response: any) => {
-        // Handle potentially different response structures
         const data = response.data || response.content || response;
-        this.mapContentToProperties(data);
-        this.isLoading = false;
+        if (data && data.header) {
+           this.headerContent = {
+            title: data.header.title,
+            subtitle: data.header.subtitle,
+            description: data.header.description
+          };
+        } else {
+             this.setHeaderFallback();
+        }
       },
-      error: (error) => {
-        console.error('Error loading contact content:', error);
-        this.isLoading = false;
-        this.setFallbackContent();
+      error: () => {
+        this.setHeaderFallback();
       }
     });
+
+    // 2. Get Contact Details List
+    this.contentService.getContactDetails().subscribe({
+        next: (response: any) => {
+             // Response is an array based on user input
+            this.contactDetailsList = response;
+            this.isLoading = false;
+        },
+        error: (error) => {
+            console.error('Error loading contact details:', error);
+            this.isLoading = false;
+            // Optionally set fallback/mock data here if needed for testing
+             this.contactDetailsList = []; 
+        }
+    });
+
   }
 
-  mapContentToProperties(content: any) {
-    // 1. Header
-    const header = content.header || {};
-    this.headerContent = {
-        title: header.title,
-        subtitle: header.subtitle,
-        description: header.description
-    };
-
-    // 2. Contact Details
-    // API might return 'contact' or 'contact_details'
-    const contact = content.contact || content.contact_details || {};
-    
-    this.contactDetailsContent = {
-        section_title: contact.section_title || contact.title || 'Contact details',
-        
-        location_label: contact.location_label || contact.address_label || 'Our location',
-        location_value: contact.location_value || contact.address || contact.location,
-        
-        phone_label: contact.phone_label || 'Call us',
-        phone_value: contact.phone_value || contact.phone,
-        
-        email_label: contact.email_label || 'Email us',
-        email_value: contact.email_value || contact.email
-    };
-  }
-
-  setFallbackContent() {
+  setHeaderFallback() {
     this.headerContent = {
       title: 'Get in',
       subtitle: 'touch today',
       description: 'Lorem ipsum dolor sit amet consectetur adipiscing elit semper dalar elementum tempus hac tellus libero accumsan.'
-    };
-    this.contactDetailsContent = {
-      section_title: 'Contact details',
-      location_label: 'Our location',
-      location_value: '58 Middle Point Rd\nSan Francisco, 94124',
-      phone_label: 'Call us',
-      phone_value: '(123) 456 - 789',
-      email_label: 'Email us',
-      email_value: 'contact@company.com'
     };
   }
 
@@ -124,18 +115,17 @@ export class ContactComponent implements OnInit {
     }
   }
 
-  getFormattedLocation(): string {
-    const location = this.contactDetailsContent.location_value || '';
-    return location.replace(/\r\n/g, '<br>').replace(/\n/g, '<br>');
+  getFormattedAddress(address: string): string {
+    if (!address) return '';
+    return address.replace(/\r\n/g, '<br>').replace(/\n/g, '<br>');
   }
 
-  getPhoneHref(): string {
-    const phone = this.contactDetailsContent.phone_value || '';
-    return 'tel:' + phone.replace(/[^0-9+]/g, '');
-  }
-
-  getEmailHref(): string {
-    const email = this.contactDetailsContent.email_value || '';
-    return 'mailto:' + email;
+  parsePhoneNumbers(phoneNumbers: string): string[] {
+    if (!phoneNumbers) return [];
+    // Split by slash if multiple numbers are presented like "022-27611193/94"
+     // But usually linking the whole string in tel might be tricky if it has slashes. 
+     // For display we keep it as is. For href we might need logic.
+     // Simple return for display:
+     return [phoneNumbers];
   }
 }

@@ -61,7 +61,9 @@
 
             <div class="mt-6 sm:mt-8 lg:mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-10 lg:gap-20">
                 <div class="place-content-center">
-                    <div class="size-20 mx-auto rounded-full bg-[#F9F9FF]"></div>
+                    <div class="size-20 mx-auto rounded-full bg-[#F9F9FF]">
+                        <img src="/uploads/content/1770188901874-1.svg" alt="Feature 1" class="size-10 object-contain">
+                    </div>
                     <p class="text-black font-customMedium text-center mt-5 text-lg sm:text-xl">
                         {{ featuresContent.feature1_title || 'Integrated Suite of Telehealth Ecosystem' }}
                     </p>
@@ -230,7 +232,7 @@
         <!-- Company Logos Section -->
         <div class="mt-12 sm:mt-16 lg:mt-20 py-12 sm:py-14 lg:py-16 px-4 sm:px-8 lg:px-32 bg-[#F0F9F9]" *ngIf="!isLoading">
             <div>
-                <h2 class="text-2xl sm:text-3xl font-customBold text-primaryColor text-center">
+                <h2 class="text-2xl s opacity-40m:text-3xl font-customBold text-primaryColor text-center">
                     {{ companyLogosContent.section_title || 'Trusted by' }}
                     <span class="text-secondaryColor">{{ companyLogosContent.section_subtitle || '10,000+ companies around the world' }}</span>
                 </h2>
@@ -239,7 +241,7 @@
                 <img *ngFor="let logo of companyLogos" 
                      [src]="logo.logoImage" 
                      [alt]="logo.companyName"
-                     class="w-20 sm:w-24 lg:w-32 opacity-40">
+                     class="w-20 sm:w-24 lg:w-32">
             </div>
         </div>
 

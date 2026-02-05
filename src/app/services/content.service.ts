@@ -42,6 +42,11 @@ export class ContentService {
     );
   }
 
+  // Get contact details
+  getContactDetails(): Observable<any[]> {
+    return this.http.get<any>(`${this.apiUrl}/contact`);
+  }
+
   // Get specific section content
   getSectionContent(pageKey: string, sectionKey: string): Observable<ContentSection> {
     return this.http.get<{content: ContentSection}>(`${this.apiUrl}/content/${pageKey}/${sectionKey}`).pipe(
