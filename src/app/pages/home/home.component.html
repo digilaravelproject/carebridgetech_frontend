@@ -60,30 +60,17 @@
             </h2>
 
             <div class="mt-6 sm:mt-8 lg:mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-10 lg:gap-20">
-                <div class="place-content-center">
-                    <div class="size-20 mx-auto rounded-full bg-[#F9F9FF]">
-                        <img src="/uploads/content/1770188901874-1.svg" alt="Feature 1" class="size-10 object-contain">
+                <div class="place-content-center" *ngFor="let feature of featuresList">
+                    <!-- Updated Icon Container as per user request -->
+                    <div class="w-16 sm:w-20 lg:w-[20%] mx-auto">
+                        <img [src]="feature.icon || '/images/ImagePlaceholder.png'" 
+                             class="w-full rounded-md object-contain" 
+                             [alt]="feature.title"
+                             onerror="this.src='/images/ImagePlaceholder.png'">
                     </div>
+                    <!-- Title -->
                     <p class="text-black font-customMedium text-center mt-5 text-lg sm:text-xl">
-                        {{ featuresContent.feature1_title || 'Integrated Suite of Telehealth Ecosystem' }}
-                    </p>
-                </div>
-                <div class="place-content-center">
-                    <div class="size-20 mx-auto rounded-full bg-[#F9F9FF]"></div>
-                    <p class="text-black font-customMedium text-center mt-5 text-lg sm:text-xl">
-                        {{ featuresContent.feature2_title || 'Future Ready with ABHA and NDHM Compliance' }}
-                    </p>
-                </div>
-                <div class="place-content-center">
-                    <div class="size-20 mx-auto rounded-full bg-[#F9F9FF]"></div>
-                    <p class="text-black font-customMedium text-center mt-5 text-lg sm:text-xl">
-                        {{ featuresContent.feature3_title || 'Real-Time Monitoring & Preventive Care' }}
-                    </p>
-                </div>
-                <div class="place-content-center">
-                    <div class="size-20 mx-auto rounded-full bg-[#F9F9FF]"></div>
-                    <p class="text-black font-customMedium text-center mt-5 text-lg sm:text-xl">
-                        {{ featuresContent.feature4_title || 'Accessible Healthcare Anytime, Anywhere' }}
+                        {{ feature.title }}
                     </p>
                 </div>
             </div>
@@ -94,9 +81,6 @@
         <div class="px-4 sm:px-8 lg:px-32 pt-8 sm:pt-12 lg:pt-16">
             <div>
                 <div>
-                    <h2 class="text-2xl sm:text-3xl font-customBold text-primaryColor capitalize text-center">Remote Healthcare
-                        <span class="text-secondaryColor">Challenges</span>
-                    </h2>
                     <h2 class="text-2xl sm:text-3xl font-customBold text-primaryColor capitalize text-center">
                         {{ challengesContent.section_title || 'Remote Healthcare' }}
                         <span class="text-secondaryColor">{{ challengesContent.section_subtitle || 'Challenges' }}</span>

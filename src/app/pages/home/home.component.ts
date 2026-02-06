@@ -26,6 +26,7 @@ export class HomeComponent implements OnInit {
   // Dynamic data arrays
   companyLogos: any[] = [];
   targetAudienceTabs: any[] = [];
+  featuresList: any[] = []; // Added for features loop
   challengesList: any[] = [];
   ecosystemList: any[] = [];
   testimonialsList: any[] = [];
@@ -77,6 +78,26 @@ export class HomeComponent implements OnInit {
   mapContentToProperties(content: any) {
     this.heroContent = content.hero || {};
     this.featuresContent = content.features || {};
+    
+    // Map features to array
+    this.featuresList = [
+      { 
+        title: this.featuresContent.feature1_title, 
+        icon: this.normalizeImageUrl(this.featuresContent.feature1_icon) 
+      },
+      { 
+        title: this.featuresContent.feature2_title, 
+        icon: this.normalizeImageUrl(this.featuresContent.feature2_icon) 
+      },
+      { 
+        title: this.featuresContent.feature3_title, 
+        icon: this.normalizeImageUrl(this.featuresContent.feature3_icon) 
+      },
+      { 
+        title: this.featuresContent.feature4_title, 
+        icon: this.normalizeImageUrl(this.featuresContent.feature4_icon) 
+      }
+    ];
     
     // Challenges: Map camelCase to snake_case equivalent or usages in template
     const chall = content.challenges || {};
@@ -206,6 +227,13 @@ export class HomeComponent implements OnInit {
       feature3_title: 'Real-Time Monitoring & Preventive Care',
       feature4_title: 'Accessible Healthcare Anytime, Anywhere'
     };
+
+    this.featuresList = [
+        { title: 'Integrated Suite of Telehealth Ecosystem', icon: '/uploads/content/1770188901874-1.svg' },
+        { title: 'Future Ready with ABHA and NHDM Compliance', icon: '/uploads/content/1770188901874-1.svg' }, // Placeholder fallback
+        { title: 'Real-Time Monitoring & Preventive Care', icon: '/uploads/content/1770188901874-1.svg' }, 
+        { title: 'Accessible Healthcare Anytime, Anywhere', icon: '/uploads/content/1770188901874-1.svg' }
+    ];
 
     this.challengesContent = {
         section_title: 'Remote Healthcare',
