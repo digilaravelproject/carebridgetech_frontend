@@ -66,7 +66,10 @@ export class HomeComponent implements OnInit {
     // Load company logos
     this.contentService.getCompanyLogos().subscribe({
       next: (logos) => {
-        this.companyLogos = logos;
+        this.companyLogos = logos.map(logo => ({
+          ...logo,
+          logoImage: this.normalizeImageUrl(logo.logoImage)
+        }));
       },
       error: (error) => {
         console.error('Error loading company logos:', error);

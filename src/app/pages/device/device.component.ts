@@ -134,69 +134,63 @@ export class DeviceComponent implements OnInit {
   parseGalleryImages(images: any, mainImage: string): string[] {
     let parsedImages: string[] = [];
 
-    // 1. Extract the raw string if it's wrapped in an array or is a string
-    let raw = '';
-    if (Array.isArray(images) && images.length > 0) {
-        raw = typeof images[0] === 'string' ? images[0] : '';
+    // 1. Always start with the main image if available
+    if (mainImage) {
+        const cleanMain = this.normalizeImageUrl(mainImage);
+        if (cleanMain) {
+            parsedImages.push(cleanMain);
+        }
+    }
+
+    // 2. Parse the gallery images input
+    if (Array.isArray(images)) {
+        images.forEach(img => {
+            if (typeof img === 'string') {
+               // Handle potential newline separated strings just in case
+               if (img.includes('\r\n') || img.includes('\\r\\n')) {
+                    const parts = img.split(/\\r\\n|\r\n/);
+                    parts.forEach(p => {
+                       const clean = this.cleanUrlString(p);
+                       if (clean) parsedImages.push(clean);
+                    });
+               } else {
+                   const clean = this.cleanUrlString(img);
+                   if (clean) parsedImages.push(clean);
+               }
+            }
+        });
     } else if (typeof images === 'string') {
-        raw = images;
+         // Handle string input
+         if (images.includes('\r\n') || images.includes('\\r\\n')) {
+             const parts = images.split(/\\r\\n|\r\n/);
+             parts.forEach(p => {
+                const clean = this.cleanUrlString(p);
+                if (clean) parsedImages.push(clean);
+             });
+         } else {
+             const clean = this.cleanUrlString(images);
+             if (clean) parsedImages.push(clean);
+         }
     }
 
-    // 2. Process the raw string
-    if (raw) {
-       // Check for garbage prefix like http://... before the quotes
-       // Pattern to match: possibly some text, then a quote, then the paths, then a quote
-       // But messy format might be: BaseUrl + "Path\r\nPath"
-       
-       // Strategy: Remove all quotes first? No, paths might handle spaces, but we assume file paths.
-       // The snippet: http://api.localhost:3000"/uploads...
-       // Let's strip quotes.
-       // And split by \r\n
-       
-       const parts = raw.split(/\\r\\n|\r\n/);
-       
-       parsedImages = parts.map(p => {
-           // Clean up the part
-           let clean = p.trim();
-           // Remove leading/trailing quotes
-           clean = clean.replace(/^"|"$/g, '');
-           // Remove escaped quotes
-           clean = clean.replace(/\\"/g, '"');
-           
-           // Remove potentially duplicated Base URL prefix attached to the first item weirdly
-           // Example: http://api.localhost:3000"/uploads/foo.png -> http://api.localhost:3000/uploads/foo.png
-           // But wait, if we stripped quotes, it became http://api.localhost:3000/uploads/foo.png.
-           // That is a valid URL! 
-           // BUT subsequent items might be just /uploads/foo.png.
-           
-           return this.normalizeImageUrl(clean);
-       }).filter(p => p.length > 0 && !p.match(/^["]+$/)); // Filter out empty or quote-only entries
-    }
-
-    // 3. Fallback to main image
-    if (parsedImages.length === 0 && mainImage) {
-        parsedImages = [this.normalizeImageUrl(mainImage)];
-    } else if (parsedImages.length === 0) {
+    // 3. Keep all images (Removed deduplication for testing/user request)
+    // parsedImages = [...new Set(parsedImages)];
+    
+    // 4. Fallback if no images at all
+    if (parsedImages.length === 0) {
         parsedImages = ['/images/ImagePlaceholder.png'];
     }
 
-    // 4. Ensure exactly 4 images for the gallery layout (User requirement: "mujeh waha 4 images chaiye")
-    const targetCount = 4;
-    // Remove duplicates if any
-    parsedImages = [...new Set(parsedImages)];
-    
-    if (parsedImages.length > 0 && parsedImages.length < targetCount) {
-        const originalLength = parsedImages.length;
-        // Fill up to targetCount by cycling
-        for (let i = 0; i < targetCount - originalLength; i++) {
-             parsedImages.push(parsedImages[i % originalLength]);
-        }
-    } 
-    // If we have more than 4, shouldn't we keep them? 
-    // User said "waha 4 images chaiye", maybe they meant *at least* 4 slots filled?
-    // Let's keep all if more than 4, but ensure at least 4.
-    
     return parsedImages;
+  }
+
+  private cleanUrlString(raw: string): string {
+      let clean = raw.trim();
+      clean = clean.replace(/^"|"$/g, '').replace(/\\"/g, '"');
+      if (clean.length > 0 && !clean.match(/^["]+$/)) {
+          return this.normalizeImageUrl(clean);
+      }
+      return '';
   }
 
   private normalizeImageUrl(url: string): string {

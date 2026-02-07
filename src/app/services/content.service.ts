@@ -336,10 +336,28 @@ export class ContentService {
                        .trim();
 
     // 5. Replace 'api.localhost' with 'localhost' (Environment Specific Fix)
-    // This allows it to work in local environment where api.localhost might not resolve
-    // In production, the API should return valid URLs, but this check is safe
     if (cleanUrl.includes('api.localhost')) {
         cleanUrl = cleanUrl.replace('api.localhost', 'localhost');
+    }
+
+    // 6. Prepend Base URL to relative paths
+    // If it's not an absolute URL (http/https/data), assume it's relative to the backend
+    if (!cleanUrl.startsWith('http') && !cleanUrl.startsWith('https') && !cleanUrl.startsWith('data:')) {
+         // Extract base URL from apiUrl (remove /api suffix)
+         let baseUrl = this.apiUrl;
+         if (baseUrl.endsWith('/api')) {
+             baseUrl = baseUrl.substring(0, baseUrl.length - 4);
+         } else if (baseUrl.endsWith('/api/')) {
+              baseUrl = baseUrl.substring(0, baseUrl.length - 5);
+         }
+         
+         // Fix double slash issues
+         if (baseUrl.endsWith('/')) {
+             baseUrl = baseUrl.substring(0, baseUrl.length - 1);
+         }
+         const path = cleanUrl.startsWith('/') ? cleanUrl : `/${cleanUrl}`;
+         
+         return `${baseUrl}${path}`;
     }
 
     return cleanUrl;
