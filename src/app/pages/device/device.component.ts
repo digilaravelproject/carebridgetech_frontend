@@ -47,18 +47,49 @@ export class DeviceComponent implements OnInit {
   loadProducts() {
     this.contentService.getProducts().subscribe({
       next: (data) => {
-        const rawProducts = data.productsByCategory || {};
-        // Process products to fix malformed data
+        const categories = data.categories || [];
         this.products = {};
-        Object.keys(rawProducts).forEach(key => {
+        this.categoryKeys = [];
+
+        if (categories.length > 0) {
+          // Handle new structure: { categories: [{ categoryKey: '...', products: [...] }] }
+          categories.forEach((cat: any) => {
+            const key = cat.categoryKey;
+            this.categoryKeys.push(key);
+            
+            this.products[key] = (cat.products || []).map((product: any) => ({
+              ...product,
+              specifications: this.parseSpecifications(product.specifications),
+              galleryImages: this.parseGalleryImages(product.galleryImages, product.mainImage),
+              swiperConfig: {
+                ...this.carouselConfig,
+                navigation: {
+                  nextEl: `.swiper-next-${product.id}`,
+                  prevEl: `.swiper-prev-${product.id}`
+                }
+              }
+            }));
+          });
+        } else {
+          // Fallback to old structure: { productsByCategory: { 'key': [...] } }
+          const rawProducts = data.productsByCategory || {};
+          Object.keys(rawProducts).forEach(key => {
+            this.categoryKeys.push(key);
             this.products[key] = rawProducts[key].map((product: any) => ({
                 ...product,
                 specifications: this.parseSpecifications(product.specifications),
-                galleryImages: this.parseGalleryImages(product.galleryImages, product.mainImage)
+                galleryImages: this.parseGalleryImages(product.galleryImages, product.mainImage),
+                swiperConfig: {
+                    ...this.carouselConfig,
+                    navigation: {
+                      nextEl: `.swiper-next-${product.id}`,
+                      prevEl: `.swiper-prev-${product.id}`
+                    }
+                }
             }));
-        });
+          });
+        }
 
-        this.categoryKeys = Object.keys(this.products); // Derive keys
         if (this.categoryKeys.length > 0) {
           this.activeTab = this.categoryKeys[0];
         }

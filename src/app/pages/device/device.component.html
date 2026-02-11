@@ -26,7 +26,7 @@
             <div *ngFor="let product of getProductsForCategory(activeTab); trackBy: trackByProductId" class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-20">
                 <div>
                     <div class="relative">
-                        <swiper class="thumbSlide rounded-2xl border border-gray-100 shadow-sm" [config]="carouselConfig">
+                        <swiper class="thumbSlide rounded-2xl border border-gray-100 shadow-sm" [config]="product.swiperConfig">
                             <ng-template swiperSlide *ngFor="let image of product.galleryImages">
                                 <div class="w-full h-[300px] sm:h-[400px] lg:h-[500px] flex items-center justify-center bg-gray-50 rounded-2xl overflow-hidden p-4">
                                     <img [src]="image" class="w-full h-full object-contain" [alt]="product.productName">
@@ -34,10 +34,10 @@
                             </ng-template>
                         </swiper>
 
-                        <div class="swiper-button-prev swiper-prev after:content-[''] !w-10">
+                        <div class="swiper-button-prev swiper-prev-{{product.id}} after:content-[''] !w-10">
                             <img src="/icons/arrow-button-left.svg" alt="" class="w-full">
                         </div>
-                        <div class="swiper-button-next swiper-next after:content-[''] !w-10">
+                        <div class="swiper-button-next swiper-next-{{product.id}} after:content-[''] !w-10">
                             <img src="/icons/arrow-button-right.svg" alt="" class="w-full">
                         </div>
                     </div>
