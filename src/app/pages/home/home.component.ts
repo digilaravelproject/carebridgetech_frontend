@@ -124,12 +124,24 @@ export class HomeComponent implements OnInit {
     this.targetAudienceContent = content.target_audience || {};
     
     // Testimonials
-    const test = content.testimonials || {}; // JSON says null currently
+    const test = content.testimonials || {};
     this.testimonialsContent = {
-        section_title: 'What our', // Fallback
-        section_subtitle: 'Clients say'
+        section_title: test.sectionTitle || 'What our',
+        section_subtitle: test.sectionHighlight || 'Clients say',
+        section_description: test.description
     };
-    this.testimonialsList = []; // JSON is null
+    
+    if (test.items && test.items.length > 0) {
+        this.testimonialsList = test.items.map((item: any) => ({
+            quote: item.title,
+            text: item.description,
+            author: item.name,
+            position: item.position,
+            image: this.normalizeImageUrl(item.profileImage)
+        }));
+    } else {
+        this.testimonialsList = [];
+    }
 
     // Company Logos
     const logos = content.company_logos || {};
@@ -241,7 +253,7 @@ export class HomeComponent implements OnInit {
     this.challengesContent = {
         section_title: 'Remote Healthcare',
         section_subtitle: 'Challenges',
-        section_description: 'Lorem ipsum dolor sit amet consectetur adipiscing elit semper dalar elementum tempus hac tellus libero accumsan.'
+        section_description: 'Remote healthcare often faces barriers like limited access, resource constraints, and fragmented data systems, which we aim to overcome.'
     };
     
     // Add default lists if API doesn't provide them yet
@@ -258,21 +270,21 @@ export class HomeComponent implements OnInit {
     };
 
     this.ecosystemList = [
-         { title: 'Platforms', description: 'Lorem ipsum dolor sit amet consecte tur adipiscing elit semper dalaracc lacus vel facilisis.', image: '/images/desktop-mockup.svg', link: '#' },
-         { title: 'Devices', description: 'Lorem ipsum dolor sit amet consecte tur adipiscing elit semper.', image: '/images/bundle.svg', link: '#' },
-         { title: 'Services', description: 'Lorem ipsum dolor sit amet consecte tur adipiscing elit semper.', image: '/images/mobile-mockup.svg', link: '#' }
+         { title: 'Platforms', description: 'A comprehensive software platform for seamless integration and management of remote healthcare operations.', image: '/images/desktop-mockup.svg', link: '#' },
+         { title: 'Devices', description: 'Advanced connected monitoring devices for accurate, real-time vital tracking from anywhere.', image: '/images/bundle.svg', link: '#' },
+         { title: 'Services', description: 'On-demand clinical support and automated workflows to extend your healthcare services efficiently.', image: '/images/mobile-mockup.svg', link: '#' }
     ];
 
     this.testimonialsContent = {
         section_title: 'What our',
         section_subtitle: 'Clients say',
-        section_description: 'Lorem ipsum dolor sit amet consectetur adipiscing elit semper dalar elementum tempus hac tellus libero accumsan.'
+        section_description: 'Discover how Carebridge Technologies is transforming virtual care delivery, empowering providers, and enhancing patient experiences worldwide.'
     };
 
     this.testimonialsList = [
-        { quote: 'An amazing service', text: 'Lorem ipsum dolor sit amet consecte adipiscing elit amet hendrerit pretium nulla sed enim iaculis mi.', author: 'John Carter', position: 'Designer at BRIX Templates', image: '/images/profile.svg' },
-        { quote: 'One of a kind service', text: 'Ultrices eros in cursus turpis massa tincidunt sem nulla pharetra diam sit amet nisl suscipit adipis.', author: 'Sophie Moore', position: 'Head of Design at BRIX Templates', image: '/images/profile.svg' },
-        { quote: 'The best service', text: 'Convallis posuere morbi leo urna molestie at elementum eu facilisis sapien pellentesque habitant.', author: 'Andy Smith', position: 'Developer at BRIX Templates', image: '/images/profile.svg' }
+        { quote: 'An amazing service', text: 'Carebridge has seamlessly integrated with our workflows, enabling us to provide timely and effective remote care to our patients.', author: 'Dr. John Carter', position: 'Chief Medical Officer', image: '/images/profile.svg' },
+        { quote: 'One of a kind service', text: 'The real-time monitoring and data accuracy have significantly improved our preventive care measures and patient outcomes.', author: 'Sophie Moore', position: 'Head of Operations', image: '/images/profile.svg' },
+        { quote: 'The best service', text: 'A truly comprehensive telehealth ecosystem that bridges the gap between healthcare specialists and rural patients.', author: 'Andy Smith', position: 'Healthcare IT Director', image: '/images/profile.svg' }
     ];
 
     this.ctaContent = {

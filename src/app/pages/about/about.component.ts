@@ -159,7 +159,7 @@ export class AboutComponent implements OnInit {
         section_label: "Contact us",
         section_title: contact.title,
         section_subtitle: contact.highlight,
-        section_description: "Lorem ipsum dolor sit amet consectetur adipiscing elit semper dalar elementum tempus hac tellus libero accumsan.", // Description API me nahi tha, static rakha hai
+        section_description: contact.description || "We're here to answer any questions you may have about our remote healthcare solutions.",
         email: contact.email,
         phone: contact.phone,
         address: contact.address
@@ -190,9 +190,9 @@ export class AboutComponent implements OnInit {
       mission_subtitle: "Mission",
       mission_description: "Build a wellness ecosystem that empowers individuals, eases the burden on healthcare systems, and catches risks before they become crises.",
       features: [
-          { title: "Early Detection", description: "Lorem ipsum...", icon: "/images/ImagePlaceholder.png" },
-          { title: "Remote Patient", description: "Lorem ipsum...", icon: "/images/ImagePlaceholder.png" },
-          { title: "Community Driven", description: "Lorem ipsum...", icon: "/images/ImagePlaceholder.png" }
+          { title: "Early Detection", description: "Identify and address health risks proactively through continuous monitoring and advanced data analytics.", icon: "/images/ImagePlaceholder.png" },
+          { title: "Remote Patient", description: "Enable accessible and continuous care for patients in the comfort of their homes using connected devices.", icon: "/images/ImagePlaceholder.png" },
+          { title: "Community Driven", description: "Foster healthier communities by extending medical expertise to rural and underserved populations.", icon: "/images/ImagePlaceholder.png" }
       ]
     };
 
@@ -209,14 +209,14 @@ export class AboutComponent implements OnInit {
     this.teamSectionContent = {
       section_title: "Meet our",
       section_subtitle: "team members",
-      section_description: "Lorem ipsum dolor sit amet consectetur adipiscing elit volutpat gravida malesuada quam commodo id integer nam."
+      section_description: "Meet the dedicated professionals leading our mission to revolutionize healthcare delivery."
     };
 
     this.contactSectionContent = {
       section_label: "Contact us",
       section_title: "Get in",
       section_subtitle: "touch today",
-      section_description: "Lorem ipsum dolor sit amet consectetur adipiscing elit semper dalar elementum tempus hac tellus libero accumsan.",
+      section_description: "We're here to answer any questions you may have about our remote healthcare solutions.",
       email: "contact@carebridge.in",
       phone: "+91 9860989899",
       address: "India"
@@ -229,7 +229,7 @@ export class AboutComponent implements OnInit {
         id: 1,
         name: "John Carter",
         position: "CEO & Co-Founder",
-        bio: "Lorem ipsum dolor sit amet consecte adipiscing elit amet hendrerit pretium nulla sed enim iaculis mi.",
+        bio: "A visionary leader with over a decade of experience in health tech, dedicated to bridging the gap in healthcare accessibility.",
         profileImage: "/images/profile.svg",
         socialLinks: {
           facebook: "",
