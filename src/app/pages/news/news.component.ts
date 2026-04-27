@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { ContentService } from '../../services/content.service';
 
 export interface NewsArticle {
@@ -58,6 +59,10 @@ export interface NewsPageContent {
 export class NewsComponent implements OnInit {
   selectedCategory: string = 'All';
   
+  // Modal state
+  showVideoModal: boolean = false;
+  videoIframeUrl: SafeResourceUrl | null = null;
+  
   // Dynamic header content
   newsHeading: string = 'Latest';
   newsHeadingHighlight: string = 'News & Updates';
@@ -88,7 +93,10 @@ export class NewsComponent implements OnInit {
   isLoading: boolean = true;
   loadingError: boolean = false;
   
-  constructor(private contentService: ContentService) {}
+  constructor(
+    private contentService: ContentService,
+    private sanitizer: DomSanitizer
+  ) {}
   
   ngOnInit(): void {
     this.loadNewsPageContent();
@@ -208,5 +216,48 @@ export class NewsComponent implements OnInit {
         author: 'David Wilson',
       }
     ];
+  }
+
+  // Video Modal Methods
+  openVideoModal(videoUrl: string | undefined): void {
+    if (!videoUrl) return;
+    
+    const embedUrl = this.parseYouTubeUrl(videoUrl);
+    if (embedUrl) {
+      this.videoIframeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(embedUrl);
+      this.showVideoModal = true;
+      // Prevent scrolling when modal is open
+      document.body.style.overflow = 'hidden';
+    }
+  }
+
+  closeVideoModal(): void {
+    this.showVideoModal = false;
+    this.videoIframeUrl = null;
+    // Restore scrolling
+    document.body.style.overflow = 'auto';
+  }
+
+  private parseYouTubeUrl(url: string): string | null {
+    let videoId = '';
+    
+    // Handle watch?v= format
+    if (url.includes('v=')) {
+      videoId = url.split('v=')[1].split('&')[0];
+    } 
+    // Handle youtu.be/ format
+    else if (url.includes('youtu.be/')) {
+      videoId = url.split('youtu.be/')[1].split('?')[0];
+    }
+    // Handle embed/ format
+    else if (url.includes('embed/')) {
+      return url;
+    }
+
+    if (videoId) {
+      return `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+    }
+    
+    return null;
   }
 }

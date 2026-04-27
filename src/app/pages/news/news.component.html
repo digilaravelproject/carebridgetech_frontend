@@ -14,7 +14,7 @@
         <!-- Featured Article -->
         <div class="mt-12 sm:mt-18 lg:mt-24 bg-white border rounded-2xl border-[#98D7C6] overflow-hidden">
             <div class="grid grid-cols-1 lg:grid-cols-2">
-                <div class="relative order-1 lg:order-1">
+                <div class="relative order-1 lg:order-1" [class.cursor-pointer]="featuredArticle.videoUrl" (click)="openVideoModal(featuredArticle.videoUrl)">
                     <img [src]="featuredArticle.imageUrl || '/images/news-img.svg'" 
                          class="w-full h-full object-cover" 
                          [alt]="featuredArticle.title"
@@ -51,11 +51,20 @@
 
     <div class="mt-8 sm:mt-10 lg:mt-14">
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-1 lg:gap-0">
-            <div *ngFor="let article of newsArticles" class="relative group overflow-hidden h-64 sm:h-72 lg:h-80">
+            <div *ngFor="let article of newsArticles" 
+                 class="relative group overflow-hidden h-64 sm:h-72 lg:h-80"
+                 [class.cursor-pointer]="article.videoUrl"
+                 (click)="openVideoModal(article.videoUrl)">
                 <img [src]="article.imageUrl || '/images/ImagePlaceholder.png'"
                     class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" 
                     [alt]="article.title"
                     onerror="this.src='/images/ImagePlaceholder.png'">
+                
+                <!-- Play Icon for Grid Items -->
+                <img *ngIf="article.videoUrl" src="/icons/play.svg"
+                    class="size-12 absolute inset-0 m-auto cursor-pointer z-20 opacity-80 group-hover:opacity-100 transition-opacity"
+                    alt="Play video">
+
                 <div
                     class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4">
                     <h3 class="text-white font-customBold text-lg">{{article.title}}</h3>
@@ -68,6 +77,21 @@
             <a [href]="socialMediaLink" target="_blank">
                 <button class="theme-button px-8 sm:px-10 py-3 text-center">{{followButtonText}}</button>
             </a>
+        </div>
+    </div>
+
+    <!-- Video Modal -->
+    <div *ngIf="showVideoModal" class="fixed inset-0 z-[9999] flex items-center justify-center p-4 sm:p-6 lg:p-20 bg-black/90 animate-fadeIn" (click)="closeVideoModal()">
+        <div class="relative w-full max-w-5xl aspect-video bg-black rounded-xl overflow-hidden shadow-2xl" (click)="$event.stopPropagation()">
+            <!-- Close Button -->
+            <button (click)="closeVideoModal()" class="absolute top-4 right-4 z-[10000] p-2 bg-white/10 hover:bg-white/20 rounded-full transition-colors text-white">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+            
+            <!-- YouTube Iframe -->
+            <iframe *ngIf="videoIframeUrl" [src]="videoIframeUrl" class="w-full h-full" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
         </div>
     </div>
 </section>

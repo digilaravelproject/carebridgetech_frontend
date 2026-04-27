@@ -37,7 +37,16 @@
                 </p>
 
                 <div class="mt-8">
-                    <button class="theme-button px-10 py-3 text-center flex items-center gap-2">
+                    <!-- Link Wrapper if button_link exists -->
+                    <a *ngIf="heroContent.button_link" [href]="heroContent.button_link" target="_blank" class="inline-block">
+                        <button class="theme-button px-10 py-3 text-center flex items-center gap-2">
+                            {{ heroContent.button_text || 'Know More' }} 
+                            <img src="/icons/arrow-right.svg" class="w-3" alt="">
+                        </button>
+                    </a>
+                    
+                    <!-- Fallback Button if no button_link exists -->
+                    <button *ngIf="!heroContent.button_link" class="theme-button px-10 py-3 text-center flex items-center gap-2">
                         {{ heroContent.button_text || 'Know More' }} 
                         <img src="/icons/arrow-right.svg" class="w-3" alt="">
                     </button>
